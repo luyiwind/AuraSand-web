@@ -2,8 +2,8 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="hourglass, sand timer, pomodoro timer, focus app, study timer, meditation timer, ADHD tools, productivity app">
-    <title>Hourglass | AuraSand 3D Pomodoro Focus Timer</title>
+    <meta name="keywords" content="hourglass app, sand timer, pomodoro timer, focus app, study timer, meditation timer, ADHD tools, productivity app">
+    <title>Hourglass App & Timer | AuraSand 3D Pomodoro Focus Timer</title>
     <link href="https://fonts.googleapis.com/css2?family=Baloo%202:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -522,11 +522,14 @@
             }
         }
 
-        .ev2-lang-switcher {
-            position: relative;
-            display: inline-flex;
+        /* 语言切换器 - 固定悬浮在右上角，不影响导航栏布局 */
+        .ev2-lang-widget {
+            position: fixed;
+            top: 16px;
+            right: 24px;
+            z-index: 1000;
+            display: flex;
             align-items: center;
-            flex-shrink: 0;
         }
         .ev2-lang-btn {
             display: inline-flex;
@@ -544,6 +547,7 @@
             white-space: nowrap;
             transition: background .2s ease, border-color .2s ease;
             line-height: 1.4;
+            box-shadow: 0 4px 12px rgba(0,0,0,.08);
         }
         .ev2-lang-btn:hover {
             border-color: var(--ev2-primary);
@@ -558,7 +562,6 @@
             position: absolute;
             top: calc(100% + 6px);
             right: 0;
-            z-index: 50;
             display: none;
             flex-direction: column;
             min-width: 140px;
@@ -569,10 +572,10 @@
             overflow: hidden;
             padding: 6px 0;
         }
-        .ev2-lang-switcher--open .ev2-lang-dropdown {
+        .ev2-lang-widget.ev2-lang--open .ev2-lang-dropdown {
             display: flex;
         }
-        .ev2-lang-switcher--open .ev2-lang-arrow {
+        .ev2-lang-widget.ev2-lang--open .ev2-lang-arrow {
             transform: rotate(180deg);
         }
         .ev2-lang-dropdown button {
@@ -598,14 +601,19 @@
             color: var(--ev2-primary);
             background: color-mix(in srgb, var(--ev2-primary) 8%, transparent);
         }
-        @media(max-width:860px) {
+
+        @media (max-width: 860px) {
+            .ev2-lang-widget {
+                top: 10px;
+                right: 16px;
+            }
             .ev2-lang-btn {
                 padding: 5px 9px;
                 font-size: .78rem;
                 gap: 3px;
             }
             .ev2-lang-dropdown {
-                right: -20px;
+                right: 0;
                 min-width: 130px;
             }
         }
@@ -657,35 +665,33 @@
     <meta name="twitter:image" content="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png">
 </head>
 <body data-kit="dna" data-sig="hand-underline" data-amb="aurora">
+
+    <!-- 语言切换器：固定悬浮在右上角，完全不影响原有布局 -->
+    <div class="ev2-lang-widget" id="ev2-lang-widget">
+        <button class="ev2-lang-btn" id="ev2-lang-btn" aria-label="Change language" data-i18n-aria="lang_switch_aria">
+            <span id="ev2-lang-label">EN</span>
+            <span class="ev2-lang-arrow">▾</span>
+        </button>
+        <div class="ev2-lang-dropdown" id="ev2-lang-dropdown">
+            <button data-lang="en" data-i18n="lang_en">English</button>
+            <button data-lang="zh-CN" data-i18n="lang_zhcn">简体中文</button>
+            <button data-lang="zh-TW" data-i18n="lang_zhtw">繁體中文</button>
+            <button data-lang="ja" data-i18n="lang_ja">日本語</button>
+            <button data-lang="ko" data-i18n="lang_ko">한국어</button>
+        </div>
+    </div>
+
     <header class="ev2-nav">
         <input type="checkbox" id="ev2-nav-toggle" class="ev2-nav-checkbox" aria-hidden="true">
         <div class="ev2-wrap ev2-nav-inner">
             <a class="ev2-nav-brand" href="#top"><img class="ev2-nav-logo" src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png" alt="AuraSand icon"><span data-i18n="brand_name">AuraSand</span></a>
             <nav class="ev2-nav-links"><a href="#screenshots" data-i18n="nav_screens">Screens</a><a href="#features" data-i18n="nav_features">Little Wonders</a><a href="#usecases" data-i18n="nav_usecases">For You</a><a href="#how" data-i18n="nav_how">How It Drifts</a><a href="#faq" data-i18n="nav_faq">FAQ</a></nav>
             <div class="ev2-nav-actions"><a class="ev2-btn ev2-btn--primary ev2-nav-cta" href="https://play.google.com/store/apps/details?id=com.siteflare.hourglass" data-i18n="nav_cta">Get It</a></div>
-            <div class="ev2-lang-switcher" id="ev2-lang-switcher">
-                <button class="ev2-lang-btn" id="ev2-lang-btn" aria-label="Change language" data-i18n-aria="lang_switch_aria">
-                    <span id="ev2-lang-label">EN</span>
-                    <span class="ev2-lang-arrow">▾</span>
-                </button>
-                <div class="ev2-lang-dropdown" id="ev2-lang-dropdown">
-                    <button data-lang="en" data-i18n="lang_en">English</button>
-                    <button data-lang="zh-CN" data-i18n="lang_zhcn">简体中文</button>
-                    <button data-lang="zh-TW" data-i18n="lang_zhtw">繁體中文</button>
-                    <button data-lang="ja" data-i18n="lang_ja">日本語</button>
-                    <button data-lang="ko" data-i18n="lang_ko">한국어</button>
-                </div>
-            </div>
             <label for="ev2-nav-toggle" class="ev2-nav-burger" aria-label="Toggle menu" data-i18n-aria="menu_toggle"><span></span><span></span><span></span></label>
         </div>
         <div class="ev2-nav-mobile">
             <nav><a href="#screenshots" data-i18n="nav_screens">Screens</a><a href="#features" data-i18n="nav_features">Little Wonders</a><a href="#usecases" data-i18n="nav_usecases">For You</a><a href="#how" data-i18n="nav_how">How It Drifts</a><a href="#faq" data-i18n="nav_faq">FAQ</a></nav>
             <a class="ev2-btn ev2-btn--primary" href="https://play.google.com/store/apps/details?id=com.siteflare.hourglass" data-i18n="nav_cta">Get It</a>
-            <div class="ev2-lang-switcher ev2-lang-switcher--mobile" style="align-self:flex-start;">
-                <button class="ev2-lang-btn" aria-label="Change language" data-i18n-aria="lang_switch_aria" onclick="document.getElementById('ev2-lang-btn').click()">
-                    <span data-i18n="lang_switch_mobile">Language</span> ▾
-                </button>
-            </div>
         </div>
     </header>
 
@@ -1188,16 +1194,13 @@
             function getStoredLang() {
                 try { return localStorage.getItem('ev2-lang'); } catch (e) { return null; }
             }
-
             function setStoredLang(lang) {
                 try { localStorage.setItem('ev2-lang', lang); } catch (e) {}
             }
-
             function detectBrowserLang() {
                 const raw = (navigator.language || navigator.userLanguage || 'en').trim();
                 if (raw.toLowerCase().startsWith('zh')) {
-                    if (raw.toLowerCase() === 'zh-tw' || raw.toLowerCase() === 'zh-hk' || raw.toLowerCase() ===
-                        'zh-mo' || raw.toLowerCase().includes('hant')) return 'zh-TW';
+                    if (raw.toLowerCase() === 'zh-tw' || raw.toLowerCase() === 'zh-hk' || raw.toLowerCase() === 'zh-mo' || raw.toLowerCase().includes('hant')) return 'zh-TW';
                     return 'zh-CN';
                 }
                 if (raw.toLowerCase().startsWith('ja')) return 'ja';
@@ -1206,7 +1209,6 @@
                 if (supportedLangs.includes(short)) return short;
                 return 'en';
             }
-
             function getCurrentLang() {
                 const stored = getStoredLang();
                 if (stored && supportedLangs.includes(stored)) return stored;
@@ -1251,21 +1253,20 @@
                 currentLang = lang;
                 setStoredLang(lang);
                 applyTranslations(lang);
-                document.getElementById('ev2-lang-switcher').classList.remove('ev2-lang-switcher--open');
+                document.getElementById('ev2-lang-widget').classList.remove('ev2-lang--open');
             }
 
             applyTranslations(currentLang);
 
-            const switcher = document.getElementById('ev2-lang-switcher');
+            const widget = document.getElementById('ev2-lang-widget');
             const langBtn = document.getElementById('ev2-lang-btn');
-            const dropdown = document.getElementById('ev2-lang-dropdown');
 
             langBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                switcher.classList.toggle('ev2-lang-switcher--open');
+                widget.classList.toggle('ev2-lang--open');
             });
 
-            dropdown.querySelectorAll('button').forEach(btn => {
+            document.getElementById('ev2-lang-dropdown').querySelectorAll('button').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     switchLang(this.getAttribute('data-lang'));
@@ -1273,11 +1274,10 @@
             });
 
             document.addEventListener('click', function() {
-                switcher.classList.remove('ev2-lang-switcher--open');
+                widget.classList.remove('ev2-lang--open');
             });
 
-            document.querySelectorAll('.ev2-foot-year').forEach(function(e) { e.textContent = new Date()
-                    .getFullYear(); });
+            document.querySelectorAll('.ev2-foot-year').forEach(function(e) { e.textContent = new Date().getFullYear(); });
         })();
     </script>
 </body>
