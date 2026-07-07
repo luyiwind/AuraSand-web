@@ -1,872 +1,1284 @@
 <!doctype html>
 <html lang="en" dir="ltr">
 <head>
-<meta charset="utf-8">
-<meta name="keywords" content="hourglass app, sand timer, pomodoro timer, focus app, study timer, meditation timer, ADHD tools, productivity app">
-<title>Hourglass App & Timer | AuraSand 3D Pomodoro Focus Timer</title>
-<link href="https://fonts.googleapis.com/css2?family=Baloo%202:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>:root{
-  --ev2-bg:#fdf6fb;
-  --ev2-surface:#ffffff;
-  --ev2-on-bg:#3a2e52;
-  --ev2-on-surface:#3a2e52;
-  --ev2-primary:#8b6fd6;
-  --ev2-primary-text:#8b6fd6;
-  --ev2-primary-text-surface:#8b6fd6;
-  --ev2-accent-text:#8b6fd6;
-  --ev2-on-primary:#ffffff;
-  --ev2-on-accent:#404040;
-  --ev2-muted:#8577a3;
-  --ev2-border:#e0d4e7;
-  --ev2-muted-base:#8577a3;
-  --ev2-border-base:#e0d4e7;
-  --ev2-accent:#f4a6c9;
-  --ev2-radius:28px;
-  --ev2-font-heading:'Baloo 2',system-ui,sans-serif;
-  --ev2-font-body:'Nunito',system-ui,sans-serif;
-  --ev2-shape-clip:none;--ev2-card-radius:34px;--ev2-btn-radius:999px;--ev2-shadow-color:color-mix(in srgb,var(--ev2-on-bg) 14%,transparent);--ev2-shadow:0 16px 40px var(--ev2-shadow-color);--ev2-shadow-drop:drop-shadow(0 16px 40px var(--ev2-shadow-color));--ev2-scale:1.14;--ev2-track:-0.01em;--ev2-space:1.12;
-}
-*,*::before,*::after{box-sizing:border-box;}
-html{scroll-behavior:smooth;scroll-padding-top:80px;}
-body{margin:0;background:var(--ev2-bg);color:var(--ev2-on-bg);font-family:var(--ev2-font-body);line-height:1.6;-webkit-font-smoothing:antialiased;}
-h1,h2,h3,h4{font-family:var(--ev2-font-heading);line-height:1.12;margin:0;font-weight:700;}
-p{margin:0;}
-a{color:inherit;text-decoration:none;}
-img{max-width:100%;display:block;}
-.ev2-wrap{max-width:1160px;margin:0 auto;padding:0 24px;}
-.ev2-wrap--wide{max-width:1400px;}
-.ev2-section{padding:calc(88px*var(--ev2-space,1)) 0;}
-/* --ev2-accent-text = the brand color SAFE TO USE AS TEXT in this context (stat numbers,
-   highlights, icon accents). It differs from --ev2-primary (the FILL color) so a pale brand
-   color never goes invisible as text. Each surface sets it to the contrast-safe value:
-   on bg -> primary nudged vs bg; on surface -> nudged vs surface; on primary/accent (where the
-   bg IS the brand color) -> on-primary. */
-.ev2-section--bg{background:var(--ev2-bg);color:var(--ev2-on-bg);--ev2-accent-text:var(--ev2-primary-text);}
-.ev2-section--surface{background:var(--ev2-surface);color:var(--ev2-on-surface);--ev2-accent-text:var(--ev2-primary-text-surface);}
-.ev2-section--primary{background:var(--ev2-primary);color:var(--ev2-on-primary);}
-.ev2-section--accent{background:var(--ev2-accent);color:var(--ev2-on-accent);}
-/* On a primary/accent surface the background IS the brand color, so brand-as-text, muted and
-   border must come from the foreground GUARANTEED to contrast with THAT bg: on-primary for a
-   primary section, on-accent for an accent section. (accent can differ from primary in lightness,
-   so borrowing on-primary there can render dark text on a dark accent band.) */
-.ev2-section--primary{
-  --ev2-muted:color-mix(in srgb,var(--ev2-on-primary) 78%,transparent);
-  --ev2-accent-text:var(--ev2-on-primary);
-  --ev2-border:color-mix(in srgb,var(--ev2-on-primary) 22%,transparent);
-}
-.ev2-section--accent{
-  --ev2-muted:color-mix(in srgb,var(--ev2-on-accent) 78%,transparent);
-  --ev2-accent-text:var(--ev2-on-accent);
-  --ev2-border:color-mix(in srgb,var(--ev2-on-accent) 22%,transparent);
-}
-.ev2-section--primary .ev2-hl{color:var(--ev2-on-primary);text-decoration:underline;text-underline-offset:4px;}
-.ev2-section--accent .ev2-hl{color:var(--ev2-on-accent);text-decoration:underline;text-underline-offset:4px;}
-/* A light SURFACE card/tile can be nested inside a primary/accent (brand-colored) section, where
-   --ev2-muted / --ev2-border / --ev2-accent-text were flipped to contrast the BRAND band, not a
-   light card. On a white card those flipped values go invisible (muted eyebrow/lead text, borders,
-   brand-as-text/stars). Restore the surface-context values from the section-immune *-base tokens.
-   :where() keeps specificity at 0 so a card can still override any of these itself. */
-:where(.ev2-card,.ev2-hero-card,.ev2-hero-pill,.ev2-hbn-tile,.ev2-dcl-quote,.ev2-dcl-rateline,.ev2-stat--card,.ev2-hgl-panel,.ev2-cmp-seam){--ev2-muted:var(--ev2-muted-base);--ev2-border:var(--ev2-border-base);--ev2-accent-text:var(--ev2-primary-text-surface);}
-.ev2-eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ev2-muted);font-weight:600;margin-bottom:14px;}
-.ev2-h1{font-size:clamp(2.4rem,5vw,3.9rem);}
-.ev2-h2{font-size:clamp(1.9rem,3.5vw,2.7rem);}
-.ev2-lead{font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--ev2-muted);max-width:46ch;}
-.ev2-hl{color:var(--ev2-accent-text);}
-.ev2-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:var(--ev2-radius);font-weight:600;font-family:var(--ev2-font-heading);transition:transform .15s ease,opacity .15s ease;}
-.ev2-btn:hover{transform:translateY(-2px);}
-.ev2-btn--primary{background:var(--ev2-primary);color:var(--ev2-on-primary);}
-.ev2-btn--ghost{background:transparent;color:inherit;border:1px solid var(--ev2-border);}
-.ev2-card{background:var(--ev2-surface);color:var(--ev2-on-surface);border:1px solid var(--ev2-border);border-radius:var(--ev2-radius);padding:28px;}
-.ev2-grid{display:grid;gap:24px;}
-.ev2-grid--2{grid-template-columns:repeat(2,1fr);}
-.ev2-grid--3{grid-template-columns:repeat(3,1fr);}
-.ev2-grid--4{grid-template-columns:repeat(4,1fr);}
-.ev2-stars{position:relative;display:inline-flex;color:var(--ev2-accent-text);vertical-align:middle;}
-.ev2-stars-base,.ev2-stars-fill{display:inline-flex;gap:2px;}
-.ev2-stars-fill{position:absolute;left:0;top:0;overflow:hidden;white-space:nowrap;pointer-events:none;}
-.ev2-star{width:16px;height:16px;flex:0 0 auto;}
-/* Badge SVGs use a square viewBox with ~3.37:1 artwork, so size by WIDTH (v1 proven). */
-.ev2-store{width:158px;height:auto;max-width:100%;display:inline-block;transition:opacity .15s ease;}
-.ev2-store-link{display:inline-flex;}
-.ev2-store-link:hover .ev2-store{opacity:.82;}
-.ev2-store-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
-@media(max-width:480px){.ev2-store{width:140px;}}
-.ev2-muted{color:var(--ev2-muted);}
+    <meta charset="utf-8">
+    <meta name="keywords" content="hourglass app, sand timer, pomodoro timer, focus app, study timer, meditation timer, ADHD tools, productivity app">
+    <title>Hourglass App & Timer | AuraSand 3D Pomodoro Focus Timer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo%202:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ev2-bg: #fdf6fb;
+            --ev2-surface: #ffffff;
+            --ev2-on-bg: #3a2e52;
+            --ev2-on-surface: #3a2e52;
+            --ev2-primary: #8b6fd6;
+            --ev2-primary-text: #8b6fd6;
+            --ev2-primary-text-surface: #8b6fd6;
+            --ev2-accent-text: #8b6fd6;
+            --ev2-on-primary: #ffffff;
+            --ev2-on-accent: #404040;
+            --ev2-muted: #8577a3;
+            --ev2-border: #e0d4e7;
+            --ev2-muted-base: #8577a3;
+            --ev2-border-base: #e0d4e7;
+            --ev2-accent: #f4a6c9;
+            --ev2-radius: 28px;
+            --ev2-font-heading: 'Baloo 2', system-ui, sans-serif;
+            --ev2-font-body: 'Nunito', system-ui, sans-serif;
+            --ev2-shape-clip: none;
+            --ev2-card-radius: 34px;
+            --ev2-btn-radius: 999px;
+            --ev2-shadow-color: color-mix(in srgb, var(--ev2-on-bg) 14%, transparent);
+            --ev2-shadow: 0 16px 40px var(--ev2-shadow-color);
+            --ev2-shadow-drop: drop-shadow(0 16px 40px var(--ev2-shadow-color));
+            --ev2-scale: 1.14;
+            --ev2-track: -0.01em;
+            --ev2-space: 1.12;
+        }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        body {
+            margin: 0;
+            background: var(--ev2-bg);
+            color: var(--ev2-on-bg);
+            font-family: var(--ev2-font-body);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: var(--ev2-font-heading);
+            line-height: 1.12;
+            margin: 0;
+            font-weight: 700;
+        }
+        p {
+            margin: 0;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        .ev2-wrap {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .ev2-wrap--wide {
+            max-width: 1400px;
+        }
+        .ev2-section {
+            padding: calc(88px*var(--ev2-space, 1)) 0;
+        }
+        .ev2-section--bg {
+            background: var(--ev2-bg);
+            color: var(--ev2-on-bg);
+            --ev2-accent-text: var(--ev2-primary-text);
+        }
+        .ev2-section--surface {
+            background: var(--ev2-surface);
+            color: var(--ev2-on-surface);
+            --ev2-accent-text: var(--ev2-primary-text-surface);
+        }
+        .ev2-section--primary {
+            background: var(--ev2-primary);
+            color: var(--ev2-on-primary);
+        }
+        .ev2-section--accent {
+            background: var(--ev2-accent);
+            color: var(--ev2-on-accent);
+        }
+        .ev2-section--primary {
+            --ev2-muted: color-mix(in srgb, var(--ev2-on-primary) 78%, transparent);
+            --ev2-accent-text: var(--ev2-on-primary);
+            --ev2-border: color-mix(in srgb, var(--ev2-on-primary) 22%, transparent);
+        }
+        .ev2-section--accent {
+            --ev2-muted: color-mix(in srgb, var(--ev2-on-accent) 78%, transparent);
+            --ev2-accent-text: var(--ev2-on-accent);
+            --ev2-border: color-mix(in srgb, var(--ev2-on-accent) 22%, transparent);
+        }
+        .ev2-section--primary .ev2-hl {
+            color: var(--ev2-on-primary);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+        .ev2-section--accent .ev2-hl {
+            color: var(--ev2-on-accent);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+        :where(.ev2-card,
+            .ev2-hero-card,
+            .ev2-hero-pill,
+            .ev2-hbn-tile,
+            .ev2-dcl-quote,
+            .ev2-dcl-rateline,
+            .ev2-stat--card,
+            .ev2-hgl-panel,
+            .ev2-cmp-seam) {
+            --ev2-muted: var(--ev2-muted-base);
+            --ev2-border: var(--ev2-border-base);
+            --ev2-accent-text: var(--ev2-primary-text-surface);
+        }
+        .ev2-eyebrow {
+            font-size: 13px;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--ev2-muted);
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+        .ev2-h1 {
+            font-size: clamp(2.4rem, 5vw, 3.9rem);
+        }
+        .ev2-h2 {
+            font-size: clamp(1.9rem, 3.5vw, 2.7rem);
+        }
+        .ev2-lead {
+            font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+            color: var(--ev2-muted);
+            max-width: 46ch;
+        }
+        .ev2-hl {
+            color: var(--ev2-accent-text);
+        }
+        .ev2-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 26px;
+            border-radius: var(--ev2-radius);
+            font-weight: 600;
+            font-family: var(--ev2-font-heading);
+            transition: transform .15s ease, opacity .15s ease;
+        }
+        .ev2-btn:hover {
+            transform: translateY(-2px);
+        }
+        .ev2-btn--primary {
+            background: var(--ev2-primary);
+            color: var(--ev2-on-primary);
+        }
+        .ev2-btn--ghost {
+            background: transparent;
+            color: inherit;
+            border: 1px solid var(--ev2-border);
+        }
+        .ev2-card {
+            background: var(--ev2-surface);
+            color: var(--ev2-on-surface);
+            border: 1px solid var(--ev2-border);
+            border-radius: var(--ev2-radius);
+            padding: 28px;
+        }
+        .ev2-grid {
+            display: grid;
+            gap: 24px;
+        }
+        .ev2-grid--2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .ev2-grid--3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .ev2-grid--4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .ev2-stars {
+            position: relative;
+            display: inline-flex;
+            color: var(--ev2-accent-text);
+            vertical-align: middle;
+        }
+        .ev2-stars-base,
+        .ev2-stars-fill {
+            display: inline-flex;
+            gap: 2px;
+        }
+        .ev2-stars-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        .ev2-star {
+            width: 16px;
+            height: 16px;
+            flex: 0 0 auto;
+        }
+        .ev2-store {
+            width: 158px;
+            height: auto;
+            max-width: 100%;
+            display: inline-block;
+            transition: opacity .15s ease;
+        }
+        .ev2-store-link {
+            display: inline-flex;
+        }
+        .ev2-store-link:hover .ev2-store {
+            opacity: .82;
+        }
+        .ev2-store-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center;
+        }
+        @media(max-width:480px) {
+            .ev2-store {
+                width: 140px;
+            }
+        }
+        .ev2-muted {
+            color: var(--ev2-muted);
+        }
+        .ev2-card {
+            border-radius: var(--ev2-card-radius);
+            box-shadow: var(--ev2-shadow);
+        }
+        .ev2-btn {
+            border-radius: var(--ev2-btn-radius);
+        }
+        .ev2-feat-icon {
+            border-radius: var(--ev2-card-radius);
+        }
+        .ev2-shot-frame,
+        .ev2-shot-g,
+        .ev2-shot,
+        .ev2-shot-lead {
+            border-radius: var(--ev2-card-radius);
+        }
+        .ev2-stat--card {
+            border-radius: var(--ev2-card-radius);
+        }
+        .ev2-h1 {
+            font-size: clamp(2.4rem, calc(5vw*var(--ev2-scale, 1)), calc(3.9rem*var(--ev2-scale, 1)));
+            letter-spacing: var(--ev2-track, -0.01em);
+        }
+        .ev2-h2 {
+            font-size: clamp(1.9rem, calc(3.5vw*var(--ev2-scale, 1)), calc(2.7rem*var(--ev2-scale, 1)));
+        }
+        .ev2-stat-v,
+        .ev2-feat-num,
+        .ev2-feat-ncard-n {
+            font-variant-numeric: tabular-nums;
+        }
+        .ev2-hl {
+            background: color-mix(in srgb, var(--ev2-primary) 20%, transparent);
+            color: var(--ev2-accent-text);
+            box-decoration-break: clone;
+            -webkit-box-decoration-break: clone;
+            padding: 0 .14em;
+            border-radius: .12em;
+        }
+        body[data-sig="hand-underline"] .ev2-hl {
+            position: relative;
+            background-image: none;
+        }
+        body[data-sig="hand-underline"] .ev2-hl::after {
+            content: "";
+            position: absolute;
+            left: -2px;
+            right: -2px;
+            bottom: -.22em;
+            height: .34em;
+            background: var(--ev2-accent-text);
+            -webkit-mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='12' viewBox='0 0 120 12'><path d='M2 8 C30 2 60 11 90 5 C102 3 112 7 118 5' stroke='%23000' stroke-width='3' fill='none' stroke-linecap='round'/></svg>") center/100% 100% no-repeat;
+            mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='12' viewBox='0 0 120 12'><path d='M2 8 C30 2 60 11 90 5 C102 3 112 7 118 5' stroke='%23000' stroke-width='3' fill='none' stroke-linecap='round'/></svg>") center/100% 100% no-repeat;
+        }
+        body[data-amb] .ev2-hero:not(.ev2-hero--mesh):not(.ev2-hero--bento):not(.ev2-hero--glass):not(.ev2-hero--panel):not(.ev2-hero--immersive):not(.ev2-hero--editorial) {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+        body[data-amb] .ev2-hero:not(.ev2-hero--mesh):not(.ev2-hero--bento):not(.ev2-hero--glass):not(.ev2-hero--panel):not(.ev2-hero--immersive):not(.ev2-hero--editorial)::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(40% 50% at 18% 20%, color-mix(in srgb, var(--ev2-primary) 38%, transparent), transparent 70%), radial-gradient(44% 54% at 84% 28%, color-mix(in srgb, var(--ev2-accent) 34%, transparent), transparent 72%), radial-gradient(54% 62% at 58% 96%, color-mix(in srgb, var(--ev2-primary) 26%, transparent), transparent 70%);
+            filter: blur(14px);
+        }
+        @media(prefers-reduced-motion:no-preference) {
+            body[data-amb] .ev2-hero:not(.ev2-hero--mesh):not(.ev2-hero--bento):not(.ev2-hero--glass):not(.ev2-hero--panel):not(.ev2-hero--immersive):not(.ev2-hero--editorial)::before {
+                animation: ev2-aurora 19s ease-in-out infinite alternate;
+                will-change: transform;
+            }
+            @keyframes ev2-aurora {
+                from {
+                    transform: translate3d(-2%, -1%, 0) scale(1.04);
+                }
+                to {
+                    transform: translate3d(3%, 2%, 0) scale(1.1);
+                }
+            }
+        }
+        .ev2-card,
+        .ev2-stat--card,
+        .ev2-feat-icon,
+        .ev2-btn--primary {
+            transition: transform .22s cubic-bezier(.2, .7, .3, 1), box-shadow .22s ease, filter .22s ease;
+        }
+        .ev2-card:hover,
+        .ev2-stat--card:hover {
+            transform: translateY(-5px);
+        }
+        @media(prefers-reduced-motion:no-preference) {
+            .ev2-card:hover {
+                filter: drop-shadow(0 18px 38px color-mix(in srgb, var(--ev2-primary) 26%, transparent));
+            }
+            .ev2-btn--primary:hover {
+                filter: drop-shadow(0 12px 26px color-mix(in srgb, var(--ev2-primary) 45%, transparent));
+            }
+            .ev2-card:hover .ev2-feat-icon {
+                transform: scale(1.08) rotate(-3deg);
+            }
+        }
+        @supports (animation-timeline:view()) {
+            @media(prefers-reduced-motion:no-preference) {
+                .ev2-section>.ev2-wrap {
+                    animation: ev2-rise both linear;
+                    animation-timeline: view();
+                    animation-range: entry 2% entry 40%;
+                }
+                .ev2-hero>.ev2-wrap {
+                    animation: none;
+                }
+                @keyframes ev2-rise {
+                    from {
+                        opacity: 0;
+                        transform: translateY(26px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: none;
+                    }
+                }
+            }
+        }
+        @media(prefers-reduced-motion:no-preference) {
+            .ev2-hero .ev2-eyebrow,
+            .ev2-hero .ev2-h1,
+            .ev2-hero .ev2-lead,
+            .ev2-hero .ev2-store-row,
+            .ev2-hero .ev2-dcl-actions,
+            .ev2-hero .ev2-hgl-cta,
+            .ev2-hero .ev2-hph-cta {
+                animation: ev2-hero-in .62s both cubic-bezier(.2, .7, .3, 1);
+            }
+            .ev2-hero .ev2-h1 {
+                animation-delay: .06s;
+            }
+            .ev2-hero .ev2-lead {
+                animation-delay: .14s;
+            }
+            .ev2-hero .ev2-store-row,
+            .ev2-hero .ev2-dcl-actions,
+            .ev2-hero .ev2-hgl-cta,
+            .ev2-hero .ev2-hph-cta {
+                animation-delay: .22s;
+            }
+            @keyframes ev2-hero-in {
+                from {
+                    opacity: 0;
+                    transform: translateY(18px);
+                }
+                to {
+                    opacity: 1;
+                    transform: none;
+                }
+            }
+        }
+        @media(max-width:860px) {
+            .ev2-section {
+                padding: calc(60px*var(--ev2-space, 1)) 0;
+            }
+            .ev2-grid--2,
+            .ev2-grid--3,
+            .ev2-grid--4 {
+                grid-template-columns: 1fr;
+            }
+        }
 
-.ev2-card{border-radius:var(--ev2-card-radius);box-shadow:var(--ev2-shadow);}
-.ev2-btn{border-radius:var(--ev2-btn-radius);}
-.ev2-feat-icon{border-radius:var(--ev2-card-radius);}
-.ev2-shot-frame,.ev2-shot-g,.ev2-shot,.ev2-shot-lead{border-radius:var(--ev2-card-radius);}
-.ev2-stat--card{border-radius:var(--ev2-card-radius);}
-.ev2-h1{font-size:clamp(2.4rem,calc(5vw*var(--ev2-scale,1)),calc(3.9rem*var(--ev2-scale,1)));letter-spacing:var(--ev2-track,-0.01em);}
-.ev2-h2{font-size:clamp(1.9rem,calc(3.5vw*var(--ev2-scale,1)),calc(2.7rem*var(--ev2-scale,1)));}
-.ev2-stat-v,.ev2-feat-num,.ev2-feat-ncard-n{font-variant-numeric:tabular-nums;}
-.ev2-hl{background:color-mix(in srgb,var(--ev2-primary) 20%,transparent);color:var(--ev2-accent-text);box-decoration-break:clone;-webkit-box-decoration-break:clone;padding:0 .14em;border-radius:.12em;}
+        .ev2-nav {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: color-mix(in srgb, var(--ev2-bg) 88%, transparent);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--ev2-border);
+        }
+        .ev2-nav-inner {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            height: 68px;
+        }
+        .ev2-nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--ev2-font-heading);
+            font-weight: 700;
+        }
+        .ev2-nav-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+        }
+        .ev2-nav-links {
+            display: flex;
+            gap: 26px;
+            margin-inline-start: auto;
+            font-weight: 500;
+        }
+        .ev2-nav-links a:hover {
+            color: var(--ev2-accent-text);
+        }
+        .ev2-nav-actions {
+            margin-inline-start: 8px;
+        }
+        .ev2-nav-checkbox {
+            display: none;
+        }
+        .ev2-nav-burger {
+            display: none;
+            width: 30px;
+            height: 24px;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            margin-inline-start: auto;
+        }
+        .ev2-nav-burger span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background: var(--ev2-on-bg);
+            border-radius: 2px;
+            transition: transform .25s ease, opacity .25s ease;
+        }
+        .ev2-nav-mobile {
+            display: none;
+            flex-direction: column;
+            gap: 14px;
+            padding: 18px 24px 24px;
+            border-top: 1px solid var(--ev2-border);
+            background: var(--ev2-bg);
+        }
+        .ev2-nav-mobile nav {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+        .ev2-nav-mobile a:hover {
+            color: var(--ev2-accent-text);
+        }
+        @media(max-width:860px) {
+            .ev2-nav-inner {
+                justify-content: space-between;
+            }
+            .ev2-nav-links {
+                display: none;
+            }
+            .ev2-nav-actions {
+                display: none;
+            }
+            .ev2-nav-burger {
+                display: flex;
+                margin-inline-start: 0;
+            }
+            .ev2-nav-checkbox:checked~.ev2-nav-mobile {
+                display: flex;
+            }
+            .ev2-nav-checkbox:checked~.ev2-nav-inner .ev2-nav-burger span:nth-child(1) {
+                transform: translateY(11px) rotate(45deg);
+            }
+            .ev2-nav-checkbox:checked~.ev2-nav-inner .ev2-nav-burger span:nth-child(2) {
+                opacity: 0;
+            }
+            .ev2-nav-checkbox:checked~.ev2-nav-inner .ev2-nav-burger span:nth-child(3) {
+                transform: translateY(-11px) rotate(-45deg);
+            }
+        }
 
-body[data-sig="hand-underline"] .ev2-hl{position:relative;background-image:none;}
-body[data-sig="hand-underline"] .ev2-hl::after{content:"";position:absolute;left:-2px;right:-2px;bottom:-.22em;height:.34em;background:var(--ev2-accent-text);-webkit-mask:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='12' viewBox='0 0 120 12'><path d='M2 8 C30 2 60 11 90 5 C102 3 112 7 118 5' stroke='%23000' stroke-width='3' fill='none' stroke-linecap='round'/></svg>") center/100% 100% no-repeat;mask:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='12' viewBox='0 0 120 12'><path d='M2 8 C30 2 60 11 90 5 C102 3 112 7 118 5' stroke='%23000' stroke-width='3' fill='none' stroke-linecap='round'/></svg>") center/100% 100% no-repeat;}
-body[data-amb] .ev2-hero:not(.ev2-hero--mesh):not(.ev2-hero--bento):not(.ev2-hero--glass):not(.ev2-hero--panel):not(.ev2-hero--immersive):not(.ev2-hero--editorial){position:relative;overflow:hidden;isolation:isolate;}
-body[data-amb] .ev2-hero:not(.ev2-hero--mesh):not(.ev2-hero--bento):not(.ev2-hero--glass):not(.ev2-hero--panel):not(.ev2-hero--immersive):not(.ev2-hero--editorial)::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(40% 50% at 18% 20%,color-mix(in srgb,var(--ev2-primary) 38%,transparent),transparent 70%),radial-gradient(44% 54% at 84% 28%,color-mix(in srgb,var(--ev2-accent) 34%,transparent),transparent 72%),radial-gradient(54% 62% at 58% 96%,color-mix(in srgb,var(--ev2-primary) 26%,transparent),transparent 70%);filter:blur(14px);}
-@media(prefers-reduced-motion:no-preference){
-  body[data-amb] .ev2-hero:not(.ev2-hero--mesh):not(.ev2-hero--bento):not(.ev2-hero--glass):not(.ev2-hero--panel):not(.ev2-hero--immersive):not(.ev2-hero--editorial)::before{animation:ev2-aurora 19s ease-in-out infinite alternate;will-change:transform;}
-  @keyframes ev2-aurora{from{transform:translate3d(-2%,-1%,0) scale(1.04);}to{transform:translate3d(3%,2%,0) scale(1.1);}}
-}
-/* WOW: interaction */
-.ev2-card,.ev2-stat--card,.ev2-feat-icon,.ev2-btn--primary{transition:transform .22s cubic-bezier(.2,.7,.3,1),box-shadow .22s ease,filter .22s ease;}
-.ev2-card:hover,.ev2-stat--card:hover{transform:translateY(-5px);}
-@media(prefers-reduced-motion:no-preference){
-  .ev2-card:hover{filter:drop-shadow(0 18px 38px color-mix(in srgb,var(--ev2-primary) 26%,transparent));}
-  .ev2-btn--primary:hover{filter:drop-shadow(0 12px 26px color-mix(in srgb,var(--ev2-primary) 45%,transparent));}
-  .ev2-card:hover .ev2-feat-icon{transform:scale(1.08) rotate(-3deg);}
-}
-/* WOW: scroll reveal (pure CSS, supported-only, motion-safe) */
-@supports (animation-timeline:view()){
-  @media(prefers-reduced-motion:no-preference){
-    .ev2-section>.ev2-wrap{animation:ev2-rise both linear;animation-timeline:view();animation-range:entry 2% entry 40%;}
-    .ev2-hero>.ev2-wrap{animation:none;}
-    @keyframes ev2-rise{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
-  }
-}
-/* WOW: hero entrance — the hero is above the fold (excluded from the scroll reveal), so its copy
-   gets a one-shot staggered rise-in on load. Works on EVERY hero variant (device-cluster, glass,
-   split, …) because it targets the copy elements, not a backdrop layer — so every page feels alive
-   even when the variant carries its own background. Motion-gated; reduced-motion users see it static. */
-@media(prefers-reduced-motion:no-preference){
-  .ev2-hero .ev2-eyebrow,.ev2-hero .ev2-h1,.ev2-hero .ev2-lead,.ev2-hero .ev2-store-row,.ev2-hero .ev2-dcl-actions,.ev2-hero .ev2-hgl-cta,.ev2-hero .ev2-hph-cta{animation:ev2-hero-in .62s both cubic-bezier(.2,.7,.3,1);}
-  .ev2-hero .ev2-h1{animation-delay:.06s;}
-  .ev2-hero .ev2-lead{animation-delay:.14s;}
-  .ev2-hero .ev2-store-row,.ev2-hero .ev2-dcl-actions,.ev2-hero .ev2-hgl-cta,.ev2-hero .ev2-hph-cta{animation-delay:.22s;}
-  @keyframes ev2-hero-in{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
-}
-@media(max-width:860px){
-  .ev2-section{padding:calc(60px*var(--ev2-space,1)) 0;}
-  .ev2-grid--2,.ev2-grid--3,.ev2-grid--4{grid-template-columns:1fr;}
-}</style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"MobileApplication","name":"Hourglass Timer - AuraSand","operatingSystem":"Android","applicationCategory":"MobileApplication","author":{"@type":"Organization","name":"SiteFlare"},"image":"https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png","description":"Hourglass timer: Pomodoro, meditation, countdown. Sand animation, white noise.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"review":[{"@type":"Review","author":{"@type":"Person","name":"A quiet corner of the nursery"},"reviewRating":{"@type":"Rating","ratingValue":5,"bestRating":5},"reviewBody":"Still filling with its first twinkles of sand, waiting to be reviewed by you."}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can I use AuraSand for focused work, not just sleep?","acceptedAnswer":{"@type":"Answer","text":"Oh yes, little one. The Pomodoro glass loves to sit beside your busy hours too."}},{"@type":"Question","name":"Will the white noise play while the sand falls?","acceptedAnswer":{"@type":"Answer","text":"It will hum along gently, wrapping every grain in a soft cloud of hush."}},{"@type":"Question","name":"Can I set my own countdown time?","acceptedAnswer":{"@type":"Answer","text":"Of course. Tell the glass how long to drift, and it will listen sweetly."}},{"@type":"Question","name":"Is it gentle enough for little ones?","acceptedAnswer":{"@type":"Answer","text":"Yes indeed. It was tipped and tilted just for small sleepy eyes."}}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How the glass drifts to sleep","step":[{"@type":"HowToStep","position":1,"name":"Choose your glass","text":"Pick a Pomodoro stretch, a meditation hush, or a plain countdown."},{"@type":"HowToStep","position":2,"name":"Tip it gently","text":"One soft tap, and the sand begins its slow, twinkling fall."},{"@type":"HowToStep","position":3,"name":"Rest in the sound","text":"Let a cloud of white noise wrap around the falling grains."},{"@type":"HowToStep","position":4,"name":"Settle and glow","text":"When the last grain falls, a soft chime says it is time to rest."}]}</script>
-
-  <meta property="og:image" content="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Hourglass Timer - AuraSand">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Hourglass Timer - AuraSand">
-  <meta name="twitter:image" content="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png">
+        .ev2-lang-switcher {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .ev2-lang-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 11px;
+            border-radius: 999px;
+            border: 1px solid var(--ev2-border);
+            background: var(--ev2-surface);
+            color: var(--ev2-on-surface);
+            cursor: pointer;
+            font-family: var(--ev2-font-body);
+            font-size: .82rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: background .2s ease, border-color .2s ease;
+            line-height: 1.4;
+        }
+        .ev2-lang-btn:hover {
+            border-color: var(--ev2-primary);
+            background: color-mix(in srgb, var(--ev2-primary) 8%, var(--ev2-surface));
+        }
+        .ev2-lang-btn .ev2-lang-arrow {
+            font-size: .6rem;
+            transition: transform .2s ease;
+            margin-left: 1px;
+        }
+        .ev2-lang-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            z-index: 50;
+            display: none;
+            flex-direction: column;
+            min-width: 140px;
+            background: var(--ev2-surface);
+            border: 1px solid var(--ev2-border);
+            border-radius: 14px;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, .16);
+            overflow: hidden;
+            padding: 6px 0;
+        }
+        .ev2-lang-switcher--open .ev2-lang-dropdown {
+            display: flex;
+        }
+        .ev2-lang-switcher--open .ev2-lang-arrow {
+            transform: rotate(180deg);
+        }
+        .ev2-lang-dropdown button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 18px;
+            border: none;
+            background: transparent;
+            color: var(--ev2-on-surface);
+            cursor: pointer;
+            font-family: var(--ev2-font-body);
+            font-size: .88rem;
+            font-weight: 500;
+            transition: background .15s ease;
+            white-space: nowrap;
+        }
+        .ev2-lang-dropdown button:hover {
+            background: color-mix(in srgb, var(--ev2-primary) 10%, transparent);
+        }
+        .ev2-lang-dropdown button.ev2-lang--active {
+            font-weight: 700;
+            color: var(--ev2-primary);
+            background: color-mix(in srgb, var(--ev2-primary) 8%, transparent);
+        }
+        @media(max-width:860px) {
+            .ev2-lang-btn {
+                padding: 5px 9px;
+                font-size: .78rem;
+                gap: 3px;
+            }
+            .ev2-lang-dropdown {
+                right: -20px;
+                min-width: 130px;
+            }
+        }
+    </style>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "MobileApplication",
+            "name": "Hourglass Timer - AuraSand",
+            "operatingSystem": "Android",
+            "applicationCategory": "MobileApplication",
+            "author": { "@type": "Organization", "name": "SiteFlare" },
+            "image": "https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png",
+            "description": "Hourglass timer: Pomodoro, meditation, countdown. Sand animation, white noise.",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "review": [{ "@type": "Review", "author": { "@type": "Person", "name": "A quiet corner of the nursery" }, "reviewRating": { "@type": "Rating", "ratingValue": 5, "bestRating": 5 }, "reviewBody": "Still filling with its first twinkles of sand, waiting to be reviewed by you." }]
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                { "@type": "Question", "name": "Can I use AuraSand for focused work, not just sleep?", "acceptedAnswer": { "@type": "Answer", "text": "Oh yes, little one. The Pomodoro glass loves to sit beside your busy hours too." } },
+                { "@type": "Question", "name": "Will the white noise play while the sand falls?", "acceptedAnswer": { "@type": "Answer", "text": "It will hum along gently, wrapping every grain in a soft cloud of hush." } },
+                { "@type": "Question", "name": "Can I set my own countdown time?", "acceptedAnswer": { "@type": "Answer", "text": "Of course. Tell the glass how long to drift, and it will listen sweetly." } },
+                { "@type": "Question", "name": "Is it gentle enough for little ones?", "acceptedAnswer": { "@type": "Answer", "text": "Yes indeed. It was tipped and tilted just for small sleepy eyes." } }
+            ]
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            "name": "How the glass drifts to sleep",
+            "step": [
+                { "@type": "HowToStep", "position": 1, "name": "Choose your glass", "text": "Pick a Pomodoro stretch, a meditation hush, or a plain countdown." },
+                { "@type": "HowToStep", "position": 2, "name": "Tip it gently", "text": "One soft tap, and the sand begins its slow, twinkling fall." },
+                { "@type": "HowToStep", "position": 3, "name": "Rest in the sound", "text": "Let a cloud of white noise wrap around the falling grains." },
+                { "@type": "HowToStep", "position": 4, "name": "Settle and glow", "text": "When the last grain falls, a soft chime says it is time to rest." }
+            ]
+        }
+    </script>
+    <meta property="og:image" content="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Hourglass Timer - AuraSand">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Hourglass Timer - AuraSand">
+    <meta name="twitter:image" content="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png">
 </head>
 <body data-kit="dna" data-sig="hand-underline" data-amb="aurora">
-<header class="ev2-nav">
-  <input type="checkbox" id="ev2-nav-toggle" class="ev2-nav-checkbox" aria-hidden="true">
-  <div class="ev2-wrap ev2-nav-inner">
-    <a class="ev2-nav-brand" href="#top"><img class="ev2-nav-logo" src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png" alt="AuraSand icon"><span>AuraSand</span></a>
-    <nav class="ev2-nav-links"><a href="#screenshots">Screens</a><a href="#features">Little Wonders</a><a href="#usecases">For You</a><a href="#how">How It Drifts</a><a href="#faq">FAQ</a></nav>
-    <div class="ev2-nav-actions"><a class="ev2-btn ev2-btn--primary ev2-nav-cta" href="https://play.google.com/store/apps/details?id=com.siteflare.hourglass">Get It</a></div>
-    <label for="ev2-nav-toggle" class="ev2-nav-burger" aria-label="Toggle menu"><span></span><span></span><span></span></label>
-  </div>
-  <div class="ev2-nav-mobile">
-    <nav><a href="#screenshots">Screens</a><a href="#features">Little Wonders</a><a href="#usecases">For You</a><a href="#how">How It Drifts</a><a href="#faq">FAQ</a></nav>
-    <a class="ev2-btn ev2-btn--primary" href="https://play.google.com/store/apps/details?id=com.siteflare.hourglass">Get It</a>
-  </div>
-</header>
-<style>
-.ev2-nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--ev2-bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--ev2-border);}
-.ev2-nav-inner{display:flex;align-items:center;gap:24px;height:68px;}
-.ev2-nav-brand{display:flex;align-items:center;gap:10px;font-family:var(--ev2-font-heading);font-weight:700;}
-.ev2-nav-logo{width:32px;height:32px;border-radius:8px;}
-.ev2-nav-links{display:flex;gap:26px;margin-inline-start:auto;font-weight:500;}
-.ev2-nav-links a:hover{color:var(--ev2-accent-text);}
-.ev2-nav-actions{margin-inline-start:8px;}
-.ev2-nav-checkbox{display:none;}
-.ev2-nav-burger{display:none;width:30px;height:24px;flex-direction:column;justify-content:space-between;cursor:pointer;margin-inline-start:auto;}
-.ev2-nav-burger span{display:block;height:2px;width:100%;background:var(--ev2-on-bg);border-radius:2px;transition:transform .25s ease,opacity .25s ease;}
-.ev2-nav-mobile{display:none;flex-direction:column;gap:14px;padding:18px 24px 24px;border-top:1px solid var(--ev2-border);background:var(--ev2-bg);}
-.ev2-nav-mobile nav{display:flex;flex-direction:column;gap:14px;font-weight:500;font-size:1.05rem;}
-.ev2-nav-mobile a:hover{color:var(--ev2-accent-text);}
-@media(max-width:860px){
-  /* brand on the left, burger hard against the right edge */
-  .ev2-nav-inner{justify-content:space-between;}
-  .ev2-nav-links{display:none;}
-  .ev2-nav-actions{display:none;}
-  .ev2-nav-burger{display:flex;margin-inline-start:0;}
-  .ev2-nav-checkbox:checked~.ev2-nav-mobile{display:flex;}
-  .ev2-nav-checkbox:checked~.ev2-nav-inner .ev2-nav-burger span:nth-child(1){transform:translateY(11px) rotate(45deg);}
-  .ev2-nav-checkbox:checked~.ev2-nav-inner .ev2-nav-burger span:nth-child(2){opacity:0;}
-  .ev2-nav-checkbox:checked~.ev2-nav-inner .ev2-nav-burger span:nth-child(3){transform:translateY(-11px) rotate(-45deg);}
-}
-</style>
-<section id="top" class="ev2-section ev2-hero ev2-section--bg">
-  <div class="ev2-wrap" style="position:relative;z-index:1;"><div class="ev2-hero-split ev2-hero-split--rev"><div class="ev2-hero-device ev2-hero-device--phone"><span class="ev2-hero-aura" aria-hidden="true"></span><span class="ev2-hero-float"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/c2e93f33-0896-4fa7-9dfa-8fb1cf6f15b0.png" alt="App preview" loading="eager"></span></div><div class="ev2-hero-copy"><img class="ev2-hero-icon" src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png" alt="App icon"><p class="ev2-eyebrow">Hush now, little one</p><h1 class="ev2-h1">Watch the sand drift down in the <span class="ev2-hl">sleepy hourglass</span></h1><p class="ev2-lead">One grain, then another. So soft, so slow. Time to rest, time to dream, time to focus, all in one twinkling glass.</p><div class="ev2-store-row"><a class="ev2-store-link" href="https://play.google.com/store/apps/details?id=com.siteflare.hourglass" target="_blank" rel="noopener"><img class="ev2-store" src="https://entro.work/assets/mockups/google-play.svg" alt="Get it on Google Play" loading="lazy"></a></div></div></div></div>
-</section>
-<style>
-.ev2-hero-icon{width:64px;height:64px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.18);}
-.ev2-hero-split{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;}
-.ev2-hero-split--rev{direction:ltr;}
-.ev2-hero-copy>*+*{margin-top:22px;}
-.ev2-hero-centered{text-align:center;max-width:760px;margin:0 auto;}
-.ev2-hero-centered>*+*{margin-top:22px;}
-.ev2-hero-centered .ev2-hero-icon{margin:0 auto;}
-.ev2-hero-centered .ev2-lead{margin-inline:auto;}
-.ev2-hero-centered .ev2-store-row{justify-content:center;}
-.ev2-hero-minimal{max-width:720px;margin:0 auto;text-align:center;}
-.ev2-hero-minimal>*+*{margin-top:20px;}
-.ev2-hero-minimal .ev2-hero-icon{margin:0 auto;}
-.ev2-hero-minimal .ev2-lead{margin-inline:auto;}
-.ev2-hero-minimal .ev2-store-row{justify-content:center;}
-.ev2-hero-typo{max-width:1000px;margin:0 auto;text-align:center;}
-.ev2-hero-typo>*+*{margin-top:24px;}
-.ev2-hero-typo-h{font-size:clamp(2.6rem,8vw,6rem);line-height:1.02;letter-spacing:-.02em;}
-.ev2-hero-typo-foot{display:flex;flex-direction:column;align-items:center;gap:18px;}
-.ev2-hero-typo .ev2-hero-icon{margin:0 auto;}
-.ev2-hero-quote{max-width:880px;margin:0 auto;text-align:center;}
-.ev2-hero-quote>*+*{margin-top:24px;}
-.ev2-hero-quote .ev2-hero-icon{margin:0 auto;}
-.ev2-hero-quote .ev2-store-row{justify-content:center;}
-.ev2-hero-bigquote{font-family:var(--ev2-font-heading);font-weight:700;font-size:clamp(2rem,4.5vw,3.4rem);line-height:1.15;margin:0;}
-.ev2-hero-bigquote::before{content:"\201C";}.ev2-hero-bigquote::after{content:"\201D";}
-.ev2-hero-chip{display:inline-block;padding:6px 16px;border-radius:999px;background:color-mix(in srgb,var(--ev2-primary) 16%,transparent);color:var(--ev2-accent-text);font-size:13px;font-weight:600;}
-.ev2-hero-spot{position:relative;}
-.ev2-hero-spot::before{content:"";position:absolute;inset:-20% -10% auto;height:140%;background:radial-gradient(50% 50% at 50% 30%,color-mix(in srgb,var(--ev2-primary) 22%,transparent),transparent 70%);z-index:-1;}
-.ev2-hero-card{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--ev2-surface);color:var(--ev2-on-surface);border:1px solid var(--ev2-border);border-radius:var(--ev2-radius);overflow:hidden;align-items:center;}
-.ev2-hero-card .ev2-hero-copy{padding:48px;}
-.ev2-hero-card .ev2-hero-media{padding:32px;}
-.ev2-hero-rail{display:grid;grid-template-columns:.7fr 1.3fr;gap:48px;align-items:center;}
-.ev2-hero-railcopy{border-inline-start:3px solid var(--ev2-primary);padding-inline-start:24px;}
-.ev2-hero-railcopy>*+*{margin-top:18px;}
-.ev2-hero-railimg img{width:100%;border-radius:var(--ev2-radius);}
-.ev2-hero-statled{align-items:center;}
-/* immersive (fullbleed): brand-gradient backdrop + framed screenshot bleeding off the bottom.
-   The screenshot is shown WHOLE in a device frame, never cover-cropped behind the headline. */
-.ev2-hero--immersive{background:radial-gradient(125% 110% at 82% 8%,color-mix(in srgb,var(--ev2-primary) 16%,var(--ev2-bg)),var(--ev2-bg) 65%);}
-.ev2-hero-immersive{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;min-height:440px;}
-.ev2-hero-media img{width:100%;border-radius:var(--ev2-radius);}
-.ev2-hero-media--phone img{max-width:320px;margin:0 auto;}
-/* Alive device: brand aura + 3D tilt + gentle float + a floating rating pill. The aura is a
-   low-alpha primary glow BEHIND the image (never under text), so the contrast guarantee holds. */
-.ev2-hero-device{position:relative;display:flex;justify-content:center;align-items:center;}
-.ev2-hero-aura{position:absolute;inset:-16% -12%;z-index:0;pointer-events:none;background:radial-gradient(48% 48% at 52% 46%,color-mix(in srgb,var(--ev2-primary) 32%,transparent),transparent 70%);filter:blur(6px);}
-.ev2-hero-float{position:relative;z-index:1;display:block;transform:perspective(1500px) rotateY(-9deg) rotateX(3deg);}
-.ev2-hero-float img{width:100%;border-radius:24px;box-shadow:0 36px 84px color-mix(in srgb,var(--ev2-on-bg) 26%,transparent);}
-.ev2-hero-device--phone .ev2-hero-float img{max-width:300px;margin:0 auto;border-radius:34px;}
-.ev2-hero-pill{position:absolute;z-index:2;display:inline-flex;align-items:center;gap:7px;background:var(--ev2-surface);color:var(--ev2-on-surface);border:1px solid var(--ev2-border);border-radius:999px;padding:9px 15px;font-size:.9rem;white-space:nowrap;box-shadow:0 16px 38px color-mix(in srgb,var(--ev2-on-bg) 22%,transparent);}
-.ev2-hero-pill .ev2-stars{display:inline-flex;}
-.ev2-hero-pill strong{font-family:var(--ev2-font-heading);font-weight:700;}
-.ev2-hero-pill small{color:var(--ev2-muted);}
-.ev2-hero-pill--rating{top:7%;right:-2%;}
-@media(prefers-reduced-motion:no-preference){
-  .ev2-hero-float{animation:ev2-hfloat 6s ease-in-out infinite;}
-  @keyframes ev2-hfloat{0%,100%{transform:perspective(1500px) rotateY(-9deg) rotateX(3deg) translateY(0);}50%{transform:perspective(1500px) rotateY(-9deg) rotateX(3deg) translateY(-15px);}}
-  .ev2-hero-pill--rating{animation:ev2-pfloat 6s ease-in-out infinite;}
-  @keyframes ev2-pfloat{0%,100%{transform:translateY(0);}50%{transform:translateY(11px);}}
-}
-@media(max-width:860px){
-  .ev2-hero-split,.ev2-hero-card,.ev2-hero-rail,.ev2-hero-immersive{grid-template-columns:1fr;text-align:center;}
-  .ev2-hero-split .ev2-store-row,.ev2-hero-rail .ev2-store-row,.ev2-hero-immersive .ev2-store-row{justify-content:center;}
-  /* copy-based heroes center their text when stacked, but the icon is a block image that
-     text-align can't center, so give it auto inline margins here. */
-  .ev2-hero-copy .ev2-hero-icon,.ev2-hero-railcopy .ev2-hero-icon{margin-inline:auto;}
-  .ev2-hero-railcopy{border-inline-start:0;padding-inline-start:0;}
-  .ev2-hero-card .ev2-hero-copy{padding:32px;}
-  .ev2-hero-typo-h{font-size:clamp(2.2rem,11vw,3.4rem);}
-  .ev2-hero-float{transform:none;animation:none;}
-  .ev2-hero-pill--rating{right:2%;top:4%;}
-}
-/* ── device-cluster hero: gradient-mesh backdrop + 3-phone framed cluster + two floating cards.
-   Governance: every color/background is var(--ev2-*) or color-mix() of tokens; box-shadows use
-   rgba(0,0,0,..) (not scanned); the only #000 is inside a mask (alpha only, not color/background).
-   Reuses .ev2-dev (bezel). All infinite animations sit in ONE prefers-reduced-motion block. */
-.ev2-hero--mesh{position:relative;overflow:hidden;}
-.ev2-hero--mesh::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(38% 44% at 15% 12%,color-mix(in srgb,var(--ev2-primary) 22%,transparent),transparent 70%),radial-gradient(42% 48% at 88% 16%,color-mix(in srgb,var(--ev2-accent) 20%,transparent),transparent 72%),radial-gradient(55% 60% at 50% 110%,color-mix(in srgb,var(--ev2-primary) 14%,transparent),transparent 70%);}
-.ev2-hero--mesh::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.45;background-image:linear-gradient(color-mix(in srgb,var(--ev2-border) 70%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--ev2-border) 70%,transparent) 1px,transparent 1px);background-size:46px 46px;-webkit-mask:radial-gradient(72% 62% at 50% 38%,#000,transparent 80%);mask:radial-gradient(72% 62% at 50% 38%,#000,transparent 80%);}
-/* The mesh is the device-cluster hero's backdrop and it was static; a slow drift gives the most
-   common hero visible life (the radial brand glows breathe). Motion-gated. */
-@media(prefers-reduced-motion:no-preference){
-  .ev2-hero--mesh::before{animation:ev2-mesh-drift 23s ease-in-out infinite alternate;will-change:transform;}
-  @keyframes ev2-mesh-drift{from{transform:translate3d(-1.5%,-1%,0) scale(1.04);}to{transform:translate3d(2.5%,1.5%,0) scale(1.09);}}
-}
-.ev2-hero-cluster{display:flex;flex-direction:column;align-items:center;gap:44px;text-align:center;}
-.ev2-dcl-copy{max-width:760px;align-items:center;}
-.ev2-dcl-copy>*+*{margin-top:22px;}
-.ev2-dcl-copy .ev2-lead{margin-inline:auto;}
-.ev2-dcl-copy .ev2-eyebrow{margin-bottom:0;}
-.ev2-dcl-h{font-size:clamp(2.2rem,5.2vw,3.7rem);line-height:1.12;}
-.ev2-dcl-h .ev2-hl{color:var(--ev2-accent-text);background:color-mix(in srgb,var(--ev2-primary) 16%,transparent);padding:.02em .3em;border-radius:.42em;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
-.ev2-dcl-chip{display:inline-flex;vertical-align:-.16em;width:1.02em;height:1.02em;margin-inline-end:.18em;border-radius:.26em;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.2);}
-.ev2-dcl-chip img{width:100%;height:100%;object-fit:cover;border-radius:inherit;}
-.ev2-dcl-actions{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:center;}
-.ev2-dcl-actions .ev2-store-row{justify-content:center;}
-.ev2-dcl-cta{border-radius:999px;padding:8px 8px 8px 0;gap:12px;}
-.ev2-dcl-cta>span:first-child{padding-inline-start:20px;}
-.ev2-dcl-cta-arrow{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:color-mix(in srgb,var(--ev2-on-primary) 18%,transparent);}
-.ev2-dcl-stage{position:relative;width:100%;max-width:760px;margin:0 auto;display:flex;justify-content:center;align-items:center;perspective:1600px;min-height:540px;}
-.ev2-dcl-glow{position:absolute;inset:6% 12%;z-index:0;pointer-events:none;background:radial-gradient(circle at 50% 46%,color-mix(in srgb,var(--ev2-primary) 30%,transparent),transparent 70%);filter:blur(12px);}
-.ev2-dcl-cluster{position:relative;z-index:1;display:flex;justify-content:center;align-items:center;width:100%;height:100%;transform-style:preserve-3d;}
-.ev2-dcl-dev{position:absolute;width:clamp(170px,18vw,250px);}
-.ev2-dcl-screen{position:relative;width:100%;aspect-ratio:9/19.5;overflow:hidden;border-radius:31px;background:color-mix(in srgb,var(--ev2-on-bg) 6%,var(--ev2-bg));}
-.ev2-dcl-screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:0;}
-.ev2-dcl-dev--c{z-index:5;left:50%;top:50%;transform:translate(-50%,-50%) translateY(18px) translateZ(60px);}
-.ev2-dcl-dev--l{z-index:3;left:50%;top:50%;transform:translate(-50%,-50%) translateX(-68%) translateY(-20px) translateZ(-40px) rotateY(20deg) scale(.84);}
-.ev2-dcl-dev--r{z-index:3;left:50%;top:50%;transform:translate(-50%,-50%) translateX(68%) translateY(-20px) translateZ(-40px) rotateY(-20deg) scale(.84);}
-.ev2-dcl-cluster--solo .ev2-dcl-dev--c{transform:translate(-50%,-50%) translateZ(40px);}
-.ev2-dcl-quote{position:absolute;z-index:6;left:0;bottom:6%;width:min(252px,60%);margin:0;text-align:start;--ev2-accent-text:var(--ev2-primary-text-surface);background:var(--ev2-surface);color:var(--ev2-on-surface);border:1px solid var(--ev2-border);border-radius:var(--ev2-radius);padding:16px 18px;box-shadow:0 24px 56px rgba(0,0,0,.22);}
-.ev2-dcl-quote-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.ev2-dcl-quote-top .ev2-stars{font-size:.82rem;}
-.ev2-dcl-quote-text{margin:0 0 8px;font-size:.9rem;line-height:1.45;}
-.ev2-dcl-quote-by{font-family:var(--ev2-font-heading);font-weight:600;font-size:.82rem;color:var(--ev2-muted);}
-.ev2-dcl-rateline{position:absolute;z-index:6;right:0;top:8%;display:inline-flex;align-items:center;gap:11px;--ev2-accent-text:var(--ev2-primary-text-surface);background:var(--ev2-surface);color:var(--ev2-on-surface);border:1px solid var(--ev2-border);border-radius:999px;padding:9px 16px 9px 12px;box-shadow:0 20px 48px rgba(0,0,0,.2);white-space:nowrap;}
-.ev2-dcl-rate{display:inline-flex;align-items:center;gap:7px;font-size:.84rem;}
-.ev2-dcl-rate .ev2-stars{font-size:.76rem;}
-.ev2-dcl-rate strong{font-family:var(--ev2-font-heading);font-weight:700;}
-.ev2-dcl-rate small{color:var(--ev2-muted);}
-@media(prefers-reduced-motion:no-preference){
-  .ev2-dcl-cluster{animation:ev2-dcl-float 7s ease-in-out infinite;}
-  @keyframes ev2-dcl-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-13px);}}
-  .ev2-dcl-quote{animation:ev2-dcl-qfloat 7.5s ease-in-out infinite;}
-  @keyframes ev2-dcl-qfloat{0%,100%{transform:translateY(0);}50%{transform:translateY(9px);}}
-  .ev2-dcl-rateline{animation:ev2-dcl-rfloat 8s ease-in-out infinite;}
-  @keyframes ev2-dcl-rfloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
-}
-@media(max-width:1024px) and (min-width:861px){
-  .ev2-dcl-stage{min-height:460px;display:grid;grid-template-rows:1fr auto;gap:18px;}
-  .ev2-dcl-quote,.ev2-dcl-rateline{position:static;animation:none;transform:none;width:auto;max-width:340px;margin:0;justify-self:center;}
-  .ev2-dcl-cluster{align-self:center;}
-  .ev2-dcl-rateline{justify-content:center;white-space:normal;}
-}
-@media(max-width:860px){
-  .ev2-hero-cluster{gap:28px;}
-  .ev2-hero--mesh::after{background-size:34px 34px;}
-  .ev2-dcl-actions{justify-content:center;}
-  .ev2-dcl-stage{perspective:none;min-height:0;display:block;}
-  .ev2-dcl-glow{display:none;}
-  .ev2-dcl-cluster{position:static;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;gap:14px;padding-bottom:10px;scroll-snap-type:x mandatory;animation:none;transform:none;transform-style:flat;height:auto;}
-  .ev2-dcl-dev{position:static;transform:none!important;animation:none!important;flex:0 0 auto;width:62vw;max-width:240px;scroll-snap-align:center;}
-  .ev2-dcl-cluster--solo{justify-content:center;}
-  .ev2-dcl-cluster--solo .ev2-dcl-dev{width:72vw;}
-  .ev2-dcl-quote,.ev2-dcl-rateline{position:static;animation:none!important;transform:none;width:auto;max-width:340px;margin:14px auto 0;left:auto;right:auto;top:auto;bottom:auto;}
-  .ev2-dcl-rateline{justify-content:center;white-space:normal;border-radius:var(--ev2-radius);}
-}
-/* ── bento-mosaic hero: asymmetric tile grid (dashboard/bento), NOT copy-next-to-a-phone.
-   Governance: every color/background is var(--ev2-*) or color-mix() of tokens; box-shadows use
-   rgba(0,0,0,..) (not scanned); the only #000 is inside a mask (alpha only, not a color/bg).
-   No infinite animation, so nothing to gate (the optional hover lift is gated anyway). */
-.ev2-hero--bento{position:relative;overflow:hidden;background-image:none;}
-.ev2-hero--bento::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;background-image:linear-gradient(color-mix(in srgb,var(--ev2-border) 65%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--ev2-border) 65%,transparent) 1px,transparent 1px);background-size:44px 44px;-webkit-mask:radial-gradient(78% 70% at 30% 28%,#000,transparent 82%);mask:radial-gradient(78% 70% at 30% 28%,#000,transparent 82%);}
-/* 3 columns, auto rows. Headline spans 2 cols top-left; screenshot spans 2 rows far-right; rating +
-   review tile the bottom band by SOURCE ORDER (auto-placement) so a missing tile never leaves a
-   hole. The cta tile spans the bottom under the headline. */
-.ev2-hbn-grid{display:grid;grid-template-columns:1.25fr 1fr .95fr;grid-auto-rows:minmax(0,auto);gap:18px;align-items:stretch;}
-.ev2-hbn-tile{background:var(--ev2-surface);color:var(--ev2-on-surface);--ev2-accent-text:var(--ev2-primary-text-surface);border:1px solid var(--ev2-border);border-radius:var(--ev2-radius);padding:26px;display:flex;flex-direction:column;justify-content:center;}
-.ev2-hbn-tile>*+*{margin-top:16px;}
-/* headline tile: top-left, 2 cols wide */
-.ev2-hbn-tile--head{grid-column:1 / span 2;grid-row:1;gap:0;align-items:flex-start;text-align:start;padding:34px;}
-.ev2-hbn-tile--head>*+*{margin-top:18px;}
-.ev2-hbn-tile--head .ev2-eyebrow{margin-bottom:0;}
-.ev2-hbn-tile--head .ev2-lead{max-width:48ch;}
-.ev2-hbn-h{font-size:clamp(2rem,4vw,3.2rem);line-height:1.1;overflow-wrap:anywhere;}
-.ev2-hbn-h .ev2-hl{color:var(--ev2-accent-text);background:color-mix(in srgb,var(--ev2-primary) 15%,transparent);padding:.02em .28em;border-radius:.4em;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
-.ev2-hbn-chip{display:inline-flex;vertical-align:-.16em;width:1.02em;height:1.02em;margin-inline-end:.2em;border-radius:.26em;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.2);}
-.ev2-hbn-chip img{width:100%;height:100%;object-fit:cover;border-radius:inherit;}
-/* screenshot tile: far-right column, spans both rows. FIXED 9/19.5 cover window so a wide
-   marketing image never letterboxes (same crop discipline as .ev2-dcl-screen). */
-.ev2-hbn-tile--shot{grid-column:3;grid-row:1 / span 2;padding:18px;align-items:center;justify-content:center;background:color-mix(in srgb,var(--ev2-primary) 7%,var(--ev2-surface));}
-.ev2-hbn-screen{position:relative;width:100%;max-width:248px;aspect-ratio:9/19.5;overflow:hidden;border-radius:26px;border:1px solid var(--ev2-border);background:color-mix(in srgb,var(--ev2-on-surface) 6%,var(--ev2-surface));box-shadow:0 24px 56px rgba(0,0,0,.18);}
-.ev2-hbn-screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:0;}
-/* bottom-band tiles: auto-placed into row 2, columns 1 then 2 by source order. */
-.ev2-hbn-tile--rate{grid-row:2;gap:8px;}
-.ev2-hbn-rate-top .ev2-stars{font-size:1.05rem;}
-.ev2-hbn-rate-num{font-family:var(--ev2-font-heading);font-weight:800;font-size:clamp(2.2rem,4vw,3rem);line-height:1;color:var(--ev2-accent-text);}
-.ev2-hbn-rate-num span{font-size:1rem;font-weight:600;color:var(--ev2-muted);margin-inline-start:6px;}
-.ev2-hbn-rate-count{font-size:.86rem;}
-.ev2-hbn-tile--quote,.ev2-hbn-tile--note{grid-row:2;margin:0;text-align:start;}
-.ev2-hbn-quote-top{margin-bottom:12px;}
-.ev2-hbn-quote-top .ev2-stars{font-size:.82rem;}
-.ev2-hbn-quote-text{margin:0 0 10px;font-size:.94rem;line-height:1.45;overflow-wrap:anywhere;}
-.ev2-hbn-quote-by{font-family:var(--ev2-font-heading);font-weight:600;font-size:.84rem;color:var(--ev2-muted);}
-.ev2-hbn-tile--note .ev2-lead{max-width:none;color:var(--ev2-on-surface);font-size:1.02rem;}
-/* MUSTFIX(hole): when only ONE bottom tile exists, span it across both bottom columns so there is
-   never an empty col2/row2 cell. */
-.ev2-hbn-grid--b1 .ev2-hbn-tile--rate,.ev2-hbn-grid--b1 .ev2-hbn-tile--quote,.ev2-hbn-grid--b1 .ev2-hbn-tile--note{grid-column:1 / span 2;}
-/* cta tile: emphasized, spans the bottom band under the headline so the action is a real cell */
-.ev2-hbn-tile--cta{grid-column:1 / span 2;flex-direction:row;flex-wrap:wrap;align-items:center;gap:14px;background:color-mix(in srgb,var(--ev2-primary) 9%,var(--ev2-surface));}
-.ev2-hbn-tile--cta .ev2-store-row{margin:0;}
-@media(prefers-reduced-motion:no-preference){
-  .ev2-hbn-tile{transition:transform .22s cubic-bezier(.2,.7,.3,1),box-shadow .22s ease;}
-  .ev2-hbn-tile--head:hover,.ev2-hbn-tile--rate:hover,.ev2-hbn-tile--quote:hover,.ev2-hbn-tile--note:hover,.ev2-hbn-tile--cta:hover{transform:translateY(-3px);}
-}
-@media(max-width:860px){
-  .ev2-hero--bento::before{background-size:32px 32px;}
-  /* collapse to a single column; every tile becomes full-width, screenshot no longer row-spans */
-  .ev2-hbn-grid{grid-template-columns:1fr;gap:14px;}
-  .ev2-hbn-tile--head,.ev2-hbn-tile--shot,.ev2-hbn-tile--rate,.ev2-hbn-tile--quote,.ev2-hbn-tile--note,.ev2-hbn-tile--cta{grid-column:1;grid-row:auto;}
-  .ev2-hbn-tile--head{text-align:center;align-items:center;padding:28px;}
-  .ev2-hbn-tile--head .ev2-lead{margin-inline:auto;}
-  .ev2-hbn-tile--shot{order:-1;}
-  .ev2-hbn-screen{max-width:220px;margin:0 auto;}
-  .ev2-hbn-tile--cta{flex-direction:column;align-items:stretch;text-align:center;}
-  .ev2-hbn-tile--cta .ev2-store-row{justify-content:center;}
-}
-/* ── brand-panel-split hero: full-bleed diptych - solid brand slab (copy) + hard diagonal seam +
-   edge-flush screenshot cover panel. Governance: every color/background is a var(--ev2-*) or
-   color-mix() of tokens; box-shadows use rgba(0,0,0,..) (not scanned). The slab uses the
-   section--primary/--accent role classes, so on-color text + muted + border are the contrast-safe
-   tokens the engine guarantees against the brand fill. No floating device / aura / tilt / pill. */
-.ev2-hero--panel{padding:0;overflow:hidden;}
-/* MUSTFIX(overflow): the body has no overflow-x guard, so the calc(50% - 50vw) breakout below could
-   push a few-px horizontal scrollbar on some browsers. Clamp it here defensively. */
-.ev2-hero--panel,.ev2-hero--panel>.ev2-wrap{max-width:100%;}
-/* Break the inner container out of .ev2-wrap to full viewport width, then drop the wrap padding so
-   the two halves sit edge-to-edge. Re-padding happens inside .ev2-hbps-copy only. */
-.ev2-hero--panel>.ev2-wrap{max-width:none;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding:0;overflow:hidden;}
-.ev2-hbps{position:relative;display:grid;grid-template-columns:1.02fr .98fr;min-height:560px;isolation:isolate;}
-/* Brand slab sits ABOVE the panel and is clipped to a forward-leaning polygon, so its angled right
-   edge overlaps onto the screenshot = the hard diagonal seam. */
-/* Slab MUST be explicitly placed in row1/col1: the panel below claims all of row1 (grid-column
-   1/-1), so an auto-placed slab gets evicted to a 2nd row and the panel is left alone in a
-   zero-height row1 (the screenshot collapses to 0px). Pinning both to row1 makes the slab size the
-   row and the panel stretch to it. */
-.ev2-hbps-slab{position:relative;z-index:2;grid-column:1;grid-row:1;display:flex;align-items:center;clip-path:polygon(0 0,100% 0,calc(100% - 88px) 100%,0 100%);}
-/* NO max-width here: box-sizing is border-box, so a max-width:560px box minus the ~164px gutter
-   padding minus the right padding left only ~150px for the headline (every word wrapped + clipped).
-   The slab column already bounds the copy; the left gutter aligns it to the page content edge, and
-   the right padding clears the 88px diagonal seam. */
-.ev2-hbps-copy{width:100%;padding:clamp(56px,7vw,96px) clamp(64px,8vw,120px) clamp(56px,7vw,96px) max(24px,calc(50vw - 580px + 24px));display:flex;flex-direction:column;}
-.ev2-hbps-copy>*+*{margin-top:22px;}
-.ev2-hbps-copy .ev2-hero-icon{margin-bottom:4px;}
-/* On the brand slab, give the lead a touch more presence than the default muted so the subhead
-   doesn't vanish on a saturated fill. Stays a color-mix of an on-color token (AA-safe floor). */
-.ev2-hbps-copy .ev2-lead{color:color-mix(in srgb,var(--ev2-on-primary) 90%,transparent);max-width:42ch;}
-.ev2-hbps-slab.ev2-section--accent .ev2-hbps-copy .ev2-lead{color:color-mix(in srgb,var(--ev2-on-accent) 90%,transparent);}
-.ev2-hbps-h{font-size:clamp(2rem,3.6vw,3.3rem);line-height:1.08;max-width:16ch;overflow-wrap:anywhere;}
-/* The headline highlight sits on the BRAND slab, not the page bg. The kit's headline treatment
-   (.ev2-hero .ev2-h1 .ev2-hl, specificity 0,3,0) paints .ev2-hl with dark accent/primary tones
-   (sometimes a gradient text-clip) that vanish on a saturated brand fill. Re-pin the highlight to
-   the on-color token at higher specificity (0,4,0) and reset any gradient clip, so it always reads.
-   The hand-underline ::after stroke (from body[data-sig] CSS) is likewise re-pinned to the on-color. */
-.ev2-hbps-slab.ev2-section--primary .ev2-h1 .ev2-hl{color:var(--ev2-on-primary);-webkit-text-fill-color:var(--ev2-on-primary);background:none;-webkit-background-clip:border-box;background-clip:border-box;}
-.ev2-hbps-slab.ev2-section--accent .ev2-h1 .ev2-hl{color:var(--ev2-on-accent);-webkit-text-fill-color:var(--ev2-on-accent);background:none;-webkit-background-clip:border-box;background-clip:border-box;}
-.ev2-hbps-slab.ev2-section--primary .ev2-h1 .ev2-hl::after{background:var(--ev2-on-primary);}
-.ev2-hbps-slab.ev2-section--accent .ev2-h1 .ev2-hl::after{background:var(--ev2-on-accent);}
-/* Inline social proof - stars + rating + N reviews + real featured review. No avatar circles. */
-.ev2-hbps-proof{margin-top:30px;padding-top:22px;border-top:1px solid var(--ev2-border);}
-.ev2-hbps-rate{display:inline-flex;align-items:center;gap:9px;font-size:.92rem;}
-.ev2-hbps-rate strong{font-family:var(--ev2-font-heading);font-weight:700;}
-.ev2-hbps-rate small{color:var(--ev2-muted);}
-.ev2-hbps-quote{margin-top:12px;font-size:.95rem;line-height:1.5;max-width:44ch;overflow-wrap:anywhere;}
-.ev2-hbps-by{color:var(--ev2-muted);font-style:normal;}
-.ev2-hbps-by::before{content:"\00B7 ";}
-/* Screenshot panel: spans both columns (reaches the viewport edge, fills height behind the angled
-   slab so the diagonal reveals it), filled with a brand-tinted gradient. The screenshot itself is a
-   CAPPED, crisp phone-screen window pinned to the right, NOT a full-bleed cover. A store screenshot
-   is often low-res; covering the whole ~1700px panel upscaled it ~3x into a blurry, randomly-cropped
-   fragment (with the source's own black bezel showing). A bounded window downscales the source
-   (crisp), shows the app from the TOP (the recognizable header), and bleeds off top/bottom for an
-   immersive feel. */
-.ev2-hbps-panel{position:relative;z-index:1;grid-column:1 / -1;grid-row:1;display:flex;align-items:center;justify-content:flex-end;overflow:hidden;background:linear-gradient(155deg,color-mix(in srgb,var(--ev2-primary) 20%,var(--ev2-bg)) 0%,var(--ev2-bg) 72%);}
-.ev2-hbps-screen{position:relative;flex:none;height:min(124%,880px);aspect-ratio:9 / 19.5;margin-right:max(24px,calc(50vw - 580px));border-radius:40px;overflow:hidden;background:var(--ev2-surface);box-shadow:0 36px 90px rgba(0,0,0,.42);}
-.ev2-hbps-screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;}
-/* MUSTFIX(keyline math): trace the slab's actual diagonal with the SAME flat 88px offset the slab
-   clip uses (the prior 88px/560*100 expression did not compute the intended edge). Decorative. */
-.ev2-hbps-slab::after{content:"";position:absolute;top:0;bottom:0;right:-2px;width:4px;background:color-mix(in srgb,var(--ev2-primary) 70%,transparent);clip-path:polygon(0 0,100% 0,calc(100% - 88px) 100%,0 100%);pointer-events:none;}
-@media(prefers-reduced-motion:no-preference){
-  .ev2-hbps-screen img{transition:transform .6s cubic-bezier(.2,.7,.3,1);}
-  .ev2-hbps:hover .ev2-hbps-screen img{transform:scale(1.04);}
-}
-@media(max-width:860px){
-  /* Stack: brand slab on top (no diagonal - a clean horizontal split reads better narrow), then a
-     centered, crisp phone-screen window below on a brand-tinted panel. */
-  .ev2-hbps{grid-template-columns:1fr;min-height:0;}
-  .ev2-hbps-slab{clip-path:none;text-align:center;}
-  .ev2-hbps-slab::after{display:none;}
-  .ev2-hbps-copy{max-width:none;margin:0;padding:48px 24px;align-items:center;}
-  .ev2-hbps-copy .ev2-lead{margin-inline:auto;}
-  .ev2-hbps-copy .ev2-store-row{justify-content:center;}
-  .ev2-hbps-copy .ev2-hero-icon{margin-inline:auto;}
-  .ev2-hbps-proof{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;}
-  .ev2-hbps-panel{position:static;grid-column:1;grid-row:auto;justify-content:center;align-items:flex-start;padding:44px 24px 52px;background:var(--ev2-bg);}
-  .ev2-hbps-screen{height:auto;width:min(260px,64%);aspect-ratio:9 / 19.5;margin:0 auto;}
-}
-/* ── product-header hero: flat App Store / Play "product page top". Governance: every color /
-   background is a var(--ev2-*) or color-mix() of tokens; box-shadows use rgba(0,0,0,..) (not
-   scanned). No infinite/scroll animation, so no prefers-reduced-motion block is required.
-   Screenshot thumbs reuse the fixed 9/19.5 crop-window contract (object-fit:cover) so a wide
-   marketing image never letterboxes. Unique .ev2-hph-* prefix. */
-.ev2-hph{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:820px;margin:0 auto;gap:24px;}
-.ev2-hph-head{display:flex;flex-direction:column;align-items:center;gap:14px;}
-.ev2-hph-icon{width:96px;height:96px;border-radius:22px;box-shadow:0 14px 34px rgba(0,0,0,.22);}
-.ev2-hph .ev2-eyebrow{margin-bottom:0;}
-/* inline metadata row: stars + 4.x + N ratings | store tag. A surface pill so it reads as a
-   store-listing badge band; text tokens (--ev2-muted, .ev2-stars) stay contrast-safe. */
-.ev2-hph-meta{display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;padding:8px 16px;border:1px solid var(--ev2-border);border-radius:999px;background:color-mix(in srgb,var(--ev2-surface) 60%,transparent);}
-.ev2-hph-rate{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;}
-.ev2-hph-rate .ev2-stars{font-size:.86rem;}
-.ev2-hph-rate strong{font-family:var(--ev2-font-heading);font-weight:700;}
-.ev2-hph-rate small{color:var(--ev2-muted);}
-.ev2-hph-meta-sep{width:1px;height:18px;background:var(--ev2-border);}
-.ev2-hph-tag{font-size:.82rem;font-weight:600;letter-spacing:.04em;color:var(--ev2-muted);}
-.ev2-hph .ev2-h1{max-width:16ch;overflow-wrap:anywhere;}
-.ev2-hph .ev2-lead{margin-inline:auto;}
-.ev2-hph-cta{display:flex;justify-content:center;}
-.ev2-hph-cta .ev2-store-row{justify-content:center;}
-/* flat upright screenshot strip: equal thumbnails in a centered row, each a fixed 9/19.5 crop
-   window so a wide marketing shot covers (never letterboxes). No tilt, no aura, no 3D. MUSTFIX:
-   wrap allowed on desktop so 4 wide thumbs never overflow the 820px container in the 861-1024 band. */
-.ev2-hph-strip{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:18px;width:100%;margin-top:14px;}
-/* MUSTFIX(dead CSS removed): one consolidated .ev2-hph-shot rule (was 3 fragmented blocks + a dead
-   >div selector + a no-op ::after). The img is a DIRECT child of .ev2-hph-shot. */
-.ev2-hph-shot{position:relative;flex:0 0 auto;width:clamp(140px,16vw,200px);aspect-ratio:9/19.5;overflow:hidden;border-radius:26px;border:1px solid var(--ev2-border);background:color-mix(in srgb,var(--ev2-on-bg) 6%,var(--ev2-bg));box-shadow:0 18px 44px rgba(0,0,0,.18);}
-.ev2-hph-strip--solo .ev2-hph-shot{width:clamp(190px,40vw,260px);}
-.ev2-hph-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:0;}
-@media(max-width:860px){
-  .ev2-hph{gap:20px;}
-  .ev2-hph-icon{width:78px;height:78px;border-radius:18px;}
-  .ev2-hph .ev2-h1{max-width:none;}
-  /* strip becomes a single horizontal scroll-snap rail so >1 phone never overflows/wraps at 375px */
-  .ev2-hph-strip{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;gap:14px;padding-bottom:10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
-  .ev2-hph-shot{width:60vw;max-width:230px;scroll-snap-align:center;}
-  .ev2-hph-strip--solo{justify-content:center;}
-  .ev2-hph-strip--solo .ev2-hph-shot{width:70vw;}
-}
-/* ── editorial-feature hero: magazine feature spread. Print layout - hairline rules, oversized
-   display headline, small flat inset screenshot in the narrow column. NO device frame/aura/tilt/
-   float/glow. Governance: every color/background is var(--ev2-*) or color-mix() of tokens;
-   box-shadows use rgba(0,0,0,..) (not scanned). No infinite animation at all, nothing to gate. */
-.ev2-hero--editorial .ev2-hedi{position:relative;}
-/* top masthead hairline across the full content width */
-.ev2-hedi{padding-top:30px;border-top:2px solid var(--ev2-on-bg);}
-.ev2-hedi-masthead{display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:22px;margin-bottom:40px;border-bottom:1px solid var(--ev2-border);}
-.ev2-hedi-kicker{margin-bottom:0;min-width:0;}
-.ev2-hedi-folio{font-family:var(--ev2-font-heading);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ev2-muted);white-space:nowrap;}
-/* asymmetric body: wide copy column dominates, narrow image column */
-.ev2-hedi-body{display:grid;grid-template-columns:1.6fr 1fr;gap:56px;align-items:start;}
-.ev2-hedi-lead{min-width:0;}
-.ev2-hedi-lead>*+*{margin-top:26px;}
-.ev2-hedi-lead .ev2-hero-icon{margin:0 0 4px;}
-/* oversized editorial display headline, tight leading, large-display tracking */
-.ev2-hedi-h{font-size:clamp(2.6rem,6.4vw,5rem);line-height:1.02;letter-spacing:-.022em;overflow-wrap:anywhere;}
-.ev2-hedi-stand{font-size:clamp(1.1rem,1.7vw,1.35rem);max-width:34ch;line-height:1.5;}
-/* print byline: stars + rating + reviews, separated by a small bullet rule */
-.ev2-hedi-byline{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:.95rem;}
-.ev2-hedi-byline strong{font-family:var(--ev2-font-heading);font-weight:700;}
-.ev2-hedi-byline small{color:var(--ev2-muted);letter-spacing:.04em;}
-.ev2-hedi-bydot{width:4px;height:4px;border-radius:50%;background:var(--ev2-muted);display:inline-block;}
-/* narrow-column inset: small FLAT framed screenshot, fixed 4/5 cover window, printed caption */
-.ev2-hedi-aside{align-self:start;padding-top:6px;}
-.ev2-hedi-figure{margin:0;}
-.ev2-hedi-shot{position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;border:1px solid var(--ev2-border);border-radius:var(--ev2-radius);background:color-mix(in srgb,var(--ev2-on-bg) 6%,var(--ev2-bg));box-shadow:0 18px 44px rgba(0,0,0,.16);}
-.ev2-hedi-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:0;}
-.ev2-hedi-credit{margin-top:12px;padding-top:10px;border-top:1px solid var(--ev2-border);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ev2-muted);}
-@media(max-width:860px){
-  .ev2-hedi{padding-top:22px;}
-  .ev2-hedi-masthead{margin-bottom:28px;padding-bottom:16px;gap:14px;}
-  .ev2-hedi-body{grid-template-columns:1fr;gap:32px;}
-  /* image moves below the copy on mobile and gets a sane cap so it never dominates */
-  .ev2-hedi-aside{order:2;max-width:340px;}
-  .ev2-hedi-h{font-size:clamp(2.2rem,10vw,3.4rem);}
-  .ev2-hedi-stand{max-width:none;}
-}
-/* ── glass-panel hero: full-bleed brand backdrop (cover screenshot OR gradient) + a frosted-glass
-   copy card floating over it. Governance: every color/background is var(--ev2-*) or a color-mix()
-   of tokens; box-shadows use rgba(0,0,0,..) (not scanned). The single infinite animation sits in ONE
-   prefers-reduced-motion block. Depth = glass blur + shadow, never a tilted device. Unique .ev2-hgl-*. */
-.ev2-hero--glass{position:relative;overflow:hidden;padding:0;background-image:none;}
-.ev2-hero--glass>.ev2-wrap{padding-top:0;padding-bottom:0;}
-/* MUSTFIX(full-bleed): break the backdrop wrapper out of .ev2-wrap (max-width:1160px) to true
-   viewport width so the cover image / gradient bleeds edge-to-edge, like a cinematic band. The glass
-   panel stays inside the normal content measure. */
-.ev2-hgl{position:relative;display:flex;align-items:center;min-height:min(620px,86vh);padding:72px 0;}
-.ev2-hgl-bg{position:absolute;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;z-index:0;overflow:hidden;background:linear-gradient(135deg,color-mix(in srgb,var(--ev2-primary) 30%,var(--ev2-bg)),var(--ev2-bg) 52%,color-mix(in srgb,var(--ev2-accent) 26%,var(--ev2-bg)));}
-/* Cover window: object-fit:cover so a wide marketing-composed shot never letterboxes. */
-.ev2-hgl-shot{position:absolute;inset:0;}
-.ev2-hgl-shot img{width:100%;height:100%;object-fit:cover;object-position:center;border-radius:0;}
-/* Scrim: a token-derived wash that lifts text contrast over any backdrop. color-mix of a token with
-   transparent (never a raw rgba in this background). */
-.ev2-hgl-scrim{position:absolute;inset:0;background:linear-gradient(90deg,color-mix(in srgb,var(--ev2-bg) 76%,transparent),color-mix(in srgb,var(--ev2-bg) 34%,transparent) 78%);}
-/* Frosted-glass panel: translucent surface + blur. Text is --ev2-on-surface (contrast-safe pair),
-   and --ev2-accent-text is re-pinned to the surface-safe brand tone so the .ev2-hl never washes out
-   on the translucent surface. MUSTFIX: surface mix raised to 85% (was 78%) so a bright screenshot
-   never bleeds through under text. */
-.ev2-hgl-panel{position:relative;z-index:1;max-width:560px;margin-inline-end:auto;padding:40px 40px 36px;border:1px solid color-mix(in srgb,var(--ev2-on-surface) 14%,transparent);border-radius:var(--ev2-radius);overflow:hidden;background:color-mix(in srgb,var(--ev2-surface) 85%,transparent);color:var(--ev2-on-surface);--ev2-accent-text:var(--ev2-primary-text-surface);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);box-shadow:0 30px 80px rgba(0,0,0,.28);}
-/* MUSTFIX(no-blur fallback): when backdrop-filter is unsupported, raise opacity so text stays
-   readable over a sharp busy screenshot. */
-@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  .ev2-hgl-panel{background:color-mix(in srgb,var(--ev2-surface) 94%,transparent);}
-}
-.ev2-hgl-panel>*+*{margin-top:20px;}
-.ev2-hgl-panel .ev2-lead{max-width:42ch;}
-/* Specular highlight sweeping the top edge (decorative; alpha-only color-mix, motion-gated below). */
-.ev2-hgl-spec{position:absolute;left:0;right:0;top:0;height:50%;pointer-events:none;background:linear-gradient(180deg,color-mix(in srgb,var(--ev2-on-surface) 8%,transparent),transparent);}
-.ev2-hgl-h{font-size:clamp(2.1rem,4.4vw,3.3rem);line-height:1.12;overflow-wrap:anywhere;}
-.ev2-hgl-h .ev2-hl{color:var(--ev2-accent-text);background:color-mix(in srgb,var(--ev2-primary) 16%,transparent);padding:.02em .3em;border-radius:.42em;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
-.ev2-hgl-chip{display:inline-flex;vertical-align:-.16em;width:1.02em;height:1.02em;margin-inline-end:.18em;border-radius:.26em;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.2);}
-.ev2-hgl-chip img{width:100%;height:100%;object-fit:cover;border-radius:inherit;}
-.ev2-hgl-cta .ev2-store-row{margin:0;}
-/* Inline rating row: stars + number + "N reviews". No avatar faces. */
-.ev2-hgl-rate{display:inline-flex;align-items:center;gap:9px;font-size:.92rem;}
-.ev2-hgl-rate strong{font-family:var(--ev2-font-heading);font-weight:700;}
-.ev2-hgl-rate small{color:var(--ev2-muted);}
-/* Featured-review block (real text + author only). Sits inside the same glass panel. */
-.ev2-hgl-quote{margin:0;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--ev2-on-surface) 14%,transparent);}
-.ev2-hgl-quote-top{margin-bottom:8px;}
-.ev2-hgl-quote-top .ev2-stars{font-size:.84rem;}
-.ev2-hgl-quote-text{margin:0 0 8px;font-size:.95rem;line-height:1.5;overflow-wrap:anywhere;}
-.ev2-hgl-quote-by{font-family:var(--ev2-font-heading);font-weight:600;font-size:.84rem;color:var(--ev2-muted);}
-@media(prefers-reduced-motion:no-preference){
-  .ev2-hgl-spec{animation:ev2-hgl-sheen 9s ease-in-out infinite;}
-  @keyframes ev2-hgl-sheen{0%,100%{opacity:.5;transform:translateY(-6%);}50%{opacity:1;transform:translateY(0);}}
-}
-@media(max-width:860px){
-  .ev2-hgl{min-height:0;padding:0;flex-direction:column;}
-  /* On mobile the backdrop becomes a top band; the glass panel drops below it full-width and
-     overlaps generously so the frosted-over-photo signature survives at 375px. */
-  .ev2-hgl-bg{position:relative;left:auto;width:100%;height:260px;}
-  .ev2-hgl-scrim{background:linear-gradient(180deg,color-mix(in srgb,var(--ev2-bg) 8%,transparent),color-mix(in srgb,var(--ev2-bg) 60%,transparent));}
-  .ev2-hgl-panel{max-width:none;width:100%;margin:-72px 0 0;padding:30px 24px 28px;text-align:center;-webkit-backdrop-filter:blur(14px) saturate(1.25);backdrop-filter:blur(14px) saturate(1.25);}
-  .ev2-hgl-panel .ev2-lead{margin-inline:auto;}
-  .ev2-hgl-cta .ev2-store-row{justify-content:center;}
-  .ev2-hgl-rate{justify-content:center;}
-  .ev2-hgl-quote{text-align:start;}
-}
-</style>
-<section class="ev2-section ev2-section--surface" style="padding:56px 0;"><div class="ev2-wrap" style="text-align:center;"><p class="ev2-eyebrow ev2-hl-title">Little sparkles tucked inside</p><div class="ev2-highlights" style="--ev2-hl-cols:4;"><div class="ev2-hlcell"><div class="ev2-hl-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></div><span>Sand that sparkles</span></div><div class="ev2-hlcell"><div class="ev2-hl-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9C1 9 2.5 5 6.5 5 9 5 12 8 12 8s3-3 5.5-3C21.5 5 23 9 21.5 12 19 16.5 12 21 12 21z"/></svg></div><span>Gentle white noise</span></div><div class="ev2-hlcell"><div class="ev2-hl-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3 7 7 .5-5.3 4.6L18.5 21 12 17l-6.5 4 1.8-6.9L2 9.5 9 9z"/></svg></div><span>Cozy Pomodoro</span></div><div class="ev2-hlcell"><div class="ev2-hl-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></div><span>Calm countdowns</span></div></div></div></section>
-<style>.ev2-hl-title{text-align:center;}
-.ev2-highlights{display:grid;grid-template-columns:repeat(var(--ev2-hl-cols),auto);justify-content:center;align-items:center;gap:32px 56px;}
-.ev2-hl-title+.ev2-highlights{margin-top:24px;}
-.ev2-hlcell{display:flex;align-items:center;gap:12px;font-family:var(--ev2-font-heading);font-weight:600;font-size:1.05rem;}
-.ev2-hl-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--ev2-primary) 14%,transparent);color:var(--ev2-accent-text);}
-.ev2-hl-icon svg{width:20px;height:20px;}
-@media(max-width:760px){.ev2-highlights{grid-template-columns:repeat(2,auto);gap:24px 40px;}}
-@media(max-width:440px){.ev2-highlights{grid-template-columns:1fr;justify-items:center;gap:20px;}}</style>
-<section id="screenshots" class="ev2-section ev2-section--bg"><div class="ev2-wrap"><h2 class="ev2-h2 ev2-shot-title">Peek inside the glass</h2><div class="ev2-shot-slider"><button type="button" class="ev2-shot-nav ev2-shot-nav--prev" aria-label="Previous screenshot" onclick="var t=this.parentNode.querySelector('.ev2-shot-track'),s=t.querySelector('.ev2-shot-slide');t.scrollBy({left:-((s?s.offsetWidth:320)+24),behavior:'smooth'})"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button><div class="ev2-shot-track"><div class="ev2-shot-slide"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/c2e93f33-0896-4fa7-9dfa-8fb1cf6f15b0.png" alt="App screenshot" loading="lazy"></div><div class="ev2-shot-slide"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/9a06e201-89be-4580-ad85-991adcb98507.png" alt="App screenshot" loading="lazy"></div><div class="ev2-shot-slide"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/ab4e5e60-8a68-4f74-bb23-29e083956dfd.png" alt="App screenshot" loading="lazy"></div><div class="ev2-shot-slide"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/25ec520e-06f2-46d0-84d3-c2c53447d3ae.png" alt="App screenshot" loading="lazy"></div><div class="ev2-shot-slide"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/5e3be5bc-0419-472a-959c-a4c926792276.png" alt="App screenshot" loading="lazy"></div><div class="ev2-shot-slide"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/7958971c-8296-49f9-b540-75a63d587676.png" alt="App screenshot" loading="lazy"></div></div><button type="button" class="ev2-shot-nav ev2-shot-nav--next" aria-label="Next screenshot" onclick="var t=this.parentNode.querySelector('.ev2-shot-track'),s=t.querySelector('.ev2-shot-slide');t.scrollBy({left:((s?s.offsetWidth:320)+24),behavior:'smooth'})"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button></div></div></section>
-<style>.ev2-shot-title{text-align:center;margin-bottom:40px;}
-.ev2-shot-row{display:flex;gap:20px;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x mandatory;}
-.ev2-shot{height:480px;width:auto;border-radius:var(--ev2-radius);border:1px solid var(--ev2-border);scroll-snap-align:center;flex:0 0 auto;}
-.ev2-shot-grid{display:grid;gap:24px;}
-.ev2-shot-g{width:100%;border-radius:var(--ev2-radius);border:1px solid var(--ev2-border);}
-/* coverflow: device-framed phones in a 3D perspective cluster. The phone bezel is a theme-derived
-   neutral (so it works on light and dark themes and never touches a text/bg pair). */
-.ev2-dev{padding:7px;border-radius:38px;background:color-mix(in srgb,var(--ev2-on-bg) 84%,var(--ev2-bg));box-shadow:0 30px 70px rgba(0,0,0,.32);}
-.ev2-dev img{display:block;width:100%;border-radius:31px;}
-.ev2-shot-cover{position:relative;display:flex;justify-content:center;align-items:center;perspective:1700px;min-height:580px;}
-.ev2-shot-cover-glow{position:absolute;inset:6% 16%;z-index:0;pointer-events:none;background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--ev2-primary) 28%,transparent),transparent 70%);filter:blur(12px);}
-.ev2-cover{position:absolute;width:clamp(184px,21vw,300px);transition:transform .35s cubic-bezier(.2,.7,.3,1);}
-.ev2-cover--c{z-index:5;transform:translateZ(70px);}
-.ev2-cover--r1{z-index:4;transform:translateX(58%) rotateY(-24deg) scale(.9);}
-.ev2-cover--l1{z-index:4;transform:translateX(-58%) rotateY(24deg) scale(.9);}
-.ev2-cover--r2{z-index:3;transform:translateX(108%) translateZ(-70px) rotateY(-32deg) scale(.8);}
-.ev2-cover--l2{z-index:3;transform:translateX(-108%) translateZ(-70px) rotateY(32deg) scale(.8);}
-.ev2-shot-strip{display:flex;gap:16px;overflow-x:auto;max-width:100%;padding-bottom:10px;margin-top:32px;scroll-snap-type:x mandatory;}
-.ev2-shot-stripimg{height:160px;width:auto;border-radius:18px;border:1px solid var(--ev2-border);flex:0 0 auto;scroll-snap-align:center;transition:transform .2s ease;}
-.ev2-shot-stripimg:hover{transform:translateY(-4px);}
-/* fan: a tilted row where each phone is FULLY visible (no overlap), just rotated for flair. */
-.ev2-shot-fan{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap;}
-.ev2-shot-fanimg{height:400px;width:auto;border-radius:24px;border:1px solid var(--ev2-border);box-shadow:0 18px 50px rgba(0,0,0,.18);transform:rotate(calc(var(--i)*3deg));}
-/* stacked: a clean staggered row, no overlap so every screenshot is fully visible. */
-.ev2-shot-stack{display:flex;justify-content:center;align-items:center;gap:24px;flex-wrap:wrap;}
-.ev2-shot-stackimg{height:420px;width:auto;border-radius:22px;border:1px solid var(--ev2-border);box-shadow:0 16px 40px rgba(0,0,0,.16);transform:translateY(calc(var(--n)*-12px));}
-.ev2-shot-stackimg:nth-child(even){transform:translateY(calc(var(--n)*12px));}
-/* framed: a swipeable row of device-framed shots (never wraps into a multi-row wall). */
-.ev2-shot-framed{display:flex;gap:28px;justify-content:flex-start;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x mandatory;}
-.ev2-shot-framed::after{content:"";flex:0 0 1px;}
-.ev2-shot-frame{flex:0 0 auto;scroll-snap-align:center;padding:10px;border-radius:30px;background:var(--ev2-surface);border:1px solid var(--ev2-border);box-shadow:0 12px 36px rgba(0,0,0,.16);}
-.ev2-shot-frame img{height:420px;width:auto;border-radius:22px;display:block;}
-@media(max-width:860px){
-  .ev2-shot,.ev2-shot-frame img{height:360px;}
-  .ev2-shot-grid{grid-template-columns:1fr 1fr !important;}
-  /* On phones: drop the 3D perspective; the coverflow becomes a plain swipe row of framed phones. */
-  .ev2-shot-cover{perspective:none;position:static;min-height:0;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;gap:16px;padding-bottom:10px;scroll-snap-type:x mandatory;}
-  .ev2-shot-cover-glow{display:none;}
-  .ev2-cover{position:static;transform:none!important;width:64vw;max-width:280px;flex:0 0 auto;scroll-snap-align:center;}
-  /* On phones: no rotation/stagger, no overlap -- screenshots scroll horizontally, each fully visible. */
-  .ev2-shot-fan,.ev2-shot-stack{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;gap:16px;padding-bottom:10px;scroll-snap-type:x mandatory;}
-  .ev2-shot-fanimg,.ev2-shot-stackimg{height:340px;transform:none;flex:0 0 auto;scroll-snap-align:center;}
-  .ev2-shot-stackimg:nth-child(even){transform:none;}
-}
-/* navigable gallery slider: scroll-snap track (native touch/swipe) + prev/next buttons. */
-.ev2-shot-slider{position:relative;}
-/* overflow-x:auto forces overflow-y to 'auto' too, which clipped the slide
-   box-shadow (0 24px 60px) at the track edge. Pad enough vertical room for the
-   shadow to render fully. */
-.ev2-shot-track{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:34px 16px 72px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
-.ev2-shot-track::-webkit-scrollbar{display:none;}
-.ev2-shot-slide{flex:0 0 auto;scroll-snap-align:center;}
-.ev2-shot-slide img{height:clamp(380px,56vh,560px);width:auto;border-radius:26px;border:1px solid var(--ev2-border);box-shadow:0 24px 60px rgba(0,0,0,.18);display:block;}
-.ev2-shot-nav{position:absolute;top:calc(50% - 19px);transform:translateY(-50%);z-index:3;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--ev2-surface);color:var(--ev2-on-surface);border:1px solid var(--ev2-border);box-shadow:0 8px 26px rgba(0,0,0,.18);transition:color .2s ease,transform .2s ease;}
-.ev2-shot-nav:hover{color:var(--ev2-accent-text);transform:translateY(-50%) scale(1.07);}
-.ev2-shot-nav--prev{left:-12px;}
-.ev2-shot-nav--next{right:-12px;}
-@media(max-width:860px){.ev2-shot-slide img{height:clamp(320px,60vh,460px);}.ev2-shot-nav{width:42px;height:42px;}.ev2-shot-nav--prev{left:-2px;}.ev2-shot-nav--next{right:-2px;}}
-</style>
-<section id="features" class="ev2-section ev2-section--surface"><div class="ev2-wrap"><h2 class="ev2-h2 ev2-feat-title">Every little grain has a job</h2><div class="ev2-feat-timeline"><div class="ev2-feat-tl"><div class="ev2-feat-tldot">1</div><div class="ev2-feat-tlcopy"><h3 class="ev2-feat-h">Pomodoro, softly</h3><p class="ev2-muted">Work floats by in gentle stretches, with rest tucked snug between.</p></div></div><div class="ev2-feat-tl"><div class="ev2-feat-tldot">2</div><div class="ev2-feat-tlcopy"><h3 class="ev2-feat-h">Meditation glow</h3><p class="ev2-muted">Breathe in, breathe out, while the sand settles calm and slow.</p></div></div><div class="ev2-feat-tl"><div class="ev2-feat-tldot">3</div><div class="ev2-feat-tlcopy"><h3 class="ev2-feat-h">Countdown that twinkles</h3><p class="ev2-muted">Set a time, watch it drift, and let the glass do the waiting.</p></div></div><div class="ev2-feat-tl"><div class="ev2-feat-tldot">4</div><div class="ev2-feat-tlcopy"><h3 class="ev2-feat-h">Sand that shimmers</h3><p class="ev2-muted">Each grain catches a little sparkle as it tips and falls.</p></div></div><div class="ev2-feat-tl"><div class="ev2-feat-tldot">5</div><div class="ev2-feat-tlcopy"><h3 class="ev2-feat-h">White noise clouds</h3><p class="ev2-muted">Soft hush sounds drift in, wrapping the room in quiet.</p></div></div><div class="ev2-feat-tl"><div class="ev2-feat-tldot">6</div><div class="ev2-feat-tlcopy"><h3 class="ev2-feat-h">No fuss, just calm</h3><p class="ev2-muted">One tap and the glass begins its slow, sleepy turn.</p></div></div></div></div></section><style>.ev2-feat-title{text-align:center;margin-bottom:44px;}
-.ev2-feat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--ev2-primary) 14%,transparent);color:var(--ev2-accent-text);margin-bottom:18px;}
-.ev2-feat-icon--sm{width:40px;height:40px;margin-bottom:0;flex:0 0 auto;}
-.ev2-feat-icon--lg{width:60px;height:60px;border-radius:16px;}
-.ev2-feat-h{font-size:1.15rem;margin-bottom:10px;}
-.ev2-feat-rows{display:flex;flex-direction:column;gap:32px;max-width:820px;margin:0 auto;}
-.ev2-feat-row{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start;padding-bottom:32px;border-bottom:1px solid var(--ev2-border);}
-.ev2-feat-row:last-child{border-bottom:0;padding-bottom:0;}
-.ev2-feat-num{font-family:var(--ev2-font-heading);font-size:clamp(2.4rem,5vw,3.6rem);font-weight:800;line-height:1;color:var(--ev2-accent-text);opacity:.32;}
-.ev2-feat-list{display:grid;grid-template-columns:1fr 1fr;gap:28px 40px;}
-.ev2-feat-li{display:flex;gap:16px;align-items:flex-start;}
-.ev2-feat-li .ev2-feat-h{margin-bottom:6px;}
-.ev2-feat-bento{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-.ev2-feat-cell--lg{grid-column:span 2;}
-.ev2-feat-cell--fill2{grid-column:span 2;}
-.ev2-feat-cell--fill3{grid-column:span 3;}
-.ev2-feat-alt{display:flex;flex-direction:column;gap:40px;max-width:880px;margin:0 auto;}
-.ev2-feat-altrow{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center;}
-.ev2-feat-altrow--rev{direction:rtl;}.ev2-feat-altrow--rev>*{direction:ltr;}
-.ev2-feat-altart{display:flex;}
-.ev2-feat-altart .ev2-feat-icon{width:84px;height:84px;border-radius:22px;margin:0;}
-.ev2-feat-altart .ev2-feat-icon svg{width:36px;height:36px;}
-.ev2-feat-altcopy{max-width:48ch;}
-.ev2-feat-icongrid{display:grid;gap:28px;text-align:center;}
-.ev2-feat-icell .ev2-feat-icon{margin:0 auto 16px;}
-.ev2-feat-ncard{position:relative;padding-top:40px;}
-.ev2-feat-ncard-n{position:absolute;top:20px;right:24px;font-family:var(--ev2-font-heading);font-weight:800;font-size:2rem;color:var(--ev2-accent-text);opacity:.28;}
-.ev2-feat-sticky{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start;}
-.ev2-feat-stickytitle{position:sticky;top:100px;}
-.ev2-feat-stickylist{display:flex;flex-direction:column;gap:28px;}
-.ev2-feat-timeline{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:0;}
-.ev2-feat-tl{display:grid;grid-template-columns:auto 1fr;gap:24px;padding-bottom:36px;position:relative;}
-.ev2-feat-tl::before{content:"";position:absolute;left:17px;top:36px;bottom:0;width:2px;background:var(--ev2-border);}
-.ev2-feat-tl:last-child{padding-bottom:0;}.ev2-feat-tl:last-child::before{display:none;}
-.ev2-feat-tldot{width:36px;height:36px;border-radius:50%;background:var(--ev2-primary);color:var(--ev2-on-primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--ev2-font-heading);z-index:1;}
-.ev2-feat-highlight{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:start;}
-.ev2-feat-hero{padding:40px;}.ev2-feat-hero-h{font-size:1.6rem;}
-.ev2-feat-hrest{display:flex;flex-direction:column;gap:24px;}
-@media(max-width:860px){.ev2-feat-list,.ev2-feat-bento,.ev2-feat-icongrid,.ev2-feat-sticky,.ev2-feat-highlight,.ev2-feat-altrow{grid-template-columns:1fr !important;}.ev2-feat-cell--lg,.ev2-feat-cell--fill2,.ev2-feat-cell--fill3{grid-column:span 1 !important;}.ev2-feat-row{grid-template-columns:1fr;gap:8px;}.ev2-feat-altrow--rev{direction:ltr;}.ev2-feat-stickytitle{position:static;}}</style>
-<section id="usecases" class="ev2-section ev2-section--bg"><div class="ev2-wrap"><h2 class="ev2-h2 ev2-uc-title">Built for sleepy moments and busy ones too</h2><div class="ev2-grid ev2-grid--2"><div class="ev2-card ev2-uc"><div class="ev2-uc-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3 7 7 .5-5.3 4.6L18.5 21 12 17l-6.5 4 1.8-6.9L2 9.5 9 9z"/></svg></div><h3 class="ev2-uc-h">For bedtime</h3><p class="ev2-muted">Let the sand drift while little eyes grow heavy and calm.</p></div><div class="ev2-card ev2-uc"><div class="ev2-uc-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg></div><h3 class="ev2-uc-h">For focused work</h3><p class="ev2-muted">Sit with the glass through a Pomodoro stretch, quiet and steady.</p></div><div class="ev2-card ev2-uc"><div class="ev2-uc-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9C1 9 2.5 5 6.5 5 9 5 12 8 12 8s3-3 5.5-3C21.5 5 23 9 21.5 12 19 16.5 12 21 12 21z"/></svg></div><h3 class="ev2-uc-h">For quiet breathing</h3><p class="ev2-muted">Meditate alongside the settling sand, one soft breath at a time.</p></div><div class="ev2-card ev2-uc"><div class="ev2-uc-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></div><h3 class="ev2-uc-h">For classrooms</h3><p class="ev2-muted">A gentle visual timer little ones can watch and understand.</p></div></div></div></section>
-<style>.ev2-uc-title{text-align:center;margin-bottom:44px;}
-.ev2-uc{display:flex;flex-direction:column;gap:10px;}
-.ev2-uc-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--ev2-accent) 16%,transparent);color:var(--ev2-accent-text);margin-bottom:8px;}
-.ev2-uc-icon svg{width:22px;height:22px;}
-.ev2-uc-h{font-size:1.15rem;}</style>
-<section id="how" class="ev2-section ev2-section--surface"><div class="ev2-wrap"><h2 class="ev2-h2 ev2-steps-title">How the glass drifts to sleep</h2><div class="ev2-steps ev2-steps--vertical" style="--ev2-n:4;--ev2-step-halo:var(--ev2-surface);"><div class="ev2-step"><div class="ev2-step-n">1</div><div><h3 class="ev2-step-h">Choose your glass</h3><p class="ev2-muted">Pick a Pomodoro stretch, a meditation hush, or a plain countdown.</p></div></div><div class="ev2-step"><div class="ev2-step-n">2</div><div><h3 class="ev2-step-h">Tip it gently</h3><p class="ev2-muted">One soft tap, and the sand begins its slow, twinkling fall.</p></div></div><div class="ev2-step"><div class="ev2-step-n">3</div><div><h3 class="ev2-step-h">Rest in the sound</h3><p class="ev2-muted">Let a cloud of white noise wrap around the falling grains.</p></div></div><div class="ev2-step"><div class="ev2-step-n">4</div><div><h3 class="ev2-step-h">Settle and glow</h3><p class="ev2-muted">When the last grain falls, a soft chime says it is time to rest.</p></div></div></div></div></section>
-<style>.ev2-steps-title{text-align:center;margin-bottom:44px;}
-.ev2-step{display:flex;gap:20px;align-items:flex-start;}
-.ev2-step-n{flex:0 0 auto;width:48px;height:48px;border-radius:50%;background:var(--ev2-primary);color:var(--ev2-on-primary);display:flex;align-items:center;justify-content:center;font-family:var(--ev2-font-heading);font-weight:800;font-size:1.2rem;position:relative;z-index:1;box-shadow:0 0 0 6px var(--ev2-step-halo,var(--ev2-bg)),var(--ev2-shadow,0 6px 18px rgba(0,0,0,.16));}
-.ev2-step-h{font-size:1.15rem;margin-bottom:8px;font-family:var(--ev2-font-heading);}
-/* horizontal: connector rail */
-.ev2-steps--horizontal{--ev2-gap:32px;--ev2-node:48px;display:grid;grid-template-columns:repeat(var(--ev2-n,3),1fr);gap:var(--ev2-gap);}
-.ev2-steps--horizontal .ev2-step{position:relative;flex-direction:column;align-items:center;text-align:center;}
-.ev2-steps--horizontal .ev2-step-n{margin:0 auto 16px;}
-.ev2-steps--horizontal .ev2-muted{max-width:34ch;margin-inline:auto;}
-.ev2-steps--horizontal .ev2-step::before,.ev2-steps--horizontal .ev2-step::after{content:"";position:absolute;top:calc(var(--ev2-node)/2);height:2px;z-index:0;transform:translateY(-50%);background:var(--ev2-primary);}
-.ev2-steps--horizontal .ev2-step::before{right:50%;left:calc(-1*(var(--ev2-gap)/2));}
-.ev2-steps--horizontal .ev2-step::after{left:50%;right:calc(-1*(var(--ev2-gap)/2));}
-.ev2-steps--horizontal .ev2-step:first-child::before{display:none;}
-.ev2-steps--horizontal .ev2-step:last-child::after{display:none;}
-/* vertical: left rail */
-.ev2-steps--vertical{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:0;}
-.ev2-steps--vertical .ev2-step{position:relative;padding-bottom:36px;}
-.ev2-steps--vertical .ev2-step::before{content:"";position:absolute;left:23px;top:48px;bottom:0;width:2px;background:var(--ev2-primary);z-index:0;}
-.ev2-steps--vertical .ev2-step:last-child{padding-bottom:0;}.ev2-steps--vertical .ev2-step:last-child::before{display:none;}
-@media(prefers-reduced-motion:no-preference){
-  .ev2-steps--horizontal .ev2-step::before,.ev2-steps--horizontal .ev2-step::after{transform-origin:left center;transform:translateY(-50%) scaleX(0);animation:ev2-rail .5s ease forwards;}
-  .ev2-steps--horizontal .ev2-step:nth-child(2)::before,.ev2-steps--horizontal .ev2-step:nth-child(2)::after{animation-delay:.12s;}
-  .ev2-steps--horizontal .ev2-step:nth-child(3)::before,.ev2-steps--horizontal .ev2-step:nth-child(3)::after{animation-delay:.24s;}
-  .ev2-steps--horizontal .ev2-step:nth-child(4)::before,.ev2-steps--horizontal .ev2-step:nth-child(4)::after{animation-delay:.36s;}
-  @keyframes ev2-rail{to{transform:translateY(-50%) scaleX(1);}}
-}
-@media(max-width:860px){
-  .ev2-steps--horizontal{grid-template-columns:1fr;gap:0;}
-  .ev2-steps--horizontal .ev2-step{flex-direction:row;text-align:left;align-items:flex-start;padding-bottom:36px;}
-  .ev2-steps--horizontal .ev2-step:last-child{padding-bottom:0;}
-  .ev2-steps--horizontal .ev2-step-n{margin:0;}
-  .ev2-steps--horizontal .ev2-muted{max-width:none;margin-inline:0;}
-  .ev2-steps--horizontal .ev2-step::after{display:none;}
-  .ev2-steps--horizontal .ev2-step::before{display:block;top:var(--ev2-node,48px);bottom:0;left:23px;right:auto;width:2px;height:auto;transform:none;animation:none;background:var(--ev2-primary);}
-  .ev2-steps--horizontal .ev2-step:first-child::before{display:block;}
-  .ev2-steps--horizontal .ev2-step:last-child::before{display:none;}
-}</style>
-<section class="ev2-section ev2-section--accent ev2-bigst ev2-bigst--quote-mark"><div class="ev2-wrap"><span class="ev2-bigst-qm" aria-hidden="true">&ldquo;</span><blockquote class="ev2-bigst-text">Every grain of sand is a tiny lullaby, falling just for you.</blockquote></div></section>
-<style>.ev2-bigst .ev2-wrap{position:relative;}
-.ev2-bigst-text{font-family:var(--ev2-font-heading);font-weight:700;line-height:1.18;margin:0;}
-.ev2-bigst-qm{display:block;font-family:Georgia,'Times New Roman',serif;line-height:.6;opacity:.18;}
-.ev2-bigst-cite{font-style:normal;font-weight:600;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;opacity:.78;}
-.ev2-bigst-rule{display:inline-block;width:26px;height:2px;background:currentColor;opacity:.55;vertical-align:middle;margin-right:12px;border-radius:2px;}
-/* quote-mark: oversized opening quote, centered statement tucked beneath it */
-.ev2-bigst--quote-mark{text-align:center;}
-.ev2-bigst--quote-mark .ev2-bigst-qm{font-size:clamp(5rem,13vw,9rem);margin:0 auto -.12em;}
-.ev2-bigst--quote-mark .ev2-bigst-text{font-size:clamp(1.9rem,4.2vw,3.1rem);max-width:20ch;margin:0 auto;}
-.ev2-bigst--quote-mark .ev2-bigst-cite{margin-top:26px;}
-/* asymmetric: left-aligned editorial with a thick accent rule. The measure is set in rem (NOT the
-   ch unit): ch resolves against THIS wrapper's font-size (inherited ~1rem), not the big child text,
-   so a ch value here would collapse the column to ~1/3 width and stack every word. */
-.ev2-bigst--asymmetric{text-align:left;}
-.ev2-bigst-asym{max-width:34rem;padding-left:clamp(20px,3vw,34px);border-left:4px solid var(--ev2-accent);}
-.ev2-bigst--asymmetric .ev2-bigst-text{font-size:clamp(1.8rem,4vw,3rem);}
-.ev2-bigst--asymmetric .ev2-bigst-cite{margin-top:22px;}
-/* pull-card: a floating quote card with subtle depth on the band */
-.ev2-bigst--pull-card .ev2-bigst-card{position:relative;max-width:760px;margin:0 auto;text-align:center;padding:clamp(30px,5vw,56px);border-radius:var(--ev2-radius-lg,22px);background:color-mix(in srgb,currentColor 9%,transparent);border:1px solid color-mix(in srgb,currentColor 20%,transparent);}
-.ev2-bigst--pull-card .ev2-bigst-qm{font-size:clamp(3.4rem,8vw,5.5rem);opacity:.32;margin-bottom:.02em;}
-.ev2-bigst--pull-card .ev2-bigst-text{font-size:clamp(1.55rem,3.4vw,2.5rem);}
-.ev2-bigst--pull-card .ev2-bigst-cite{margin-top:24px;}
-/* marquee-scale: huge tight display type */
-.ev2-bigst--marquee-scale{text-align:center;}
-.ev2-bigst--marquee-scale .ev2-bigst-text{font-size:clamp(2.4rem,7vw,5rem);font-weight:800;line-height:1.04;letter-spacing:-.02em;max-width:16ch;margin:0 auto;}
-.ev2-bigst--marquee-scale .ev2-bigst-cite{margin-top:28px;}</style>
-<section id="reviews" class="ev2-section ev2-section--bg"><div class="ev2-wrap"><h2 class="ev2-h2 ev2-rev-title">Sleepy little words from sleepy little users</h2><div class="ev2-grid ev2-grid--2"><div class="ev2-card ev2-rev"><span class="ev2-stars" role="img" aria-label="5.0 out of 5"><span class="ev2-stars-base"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg></span><span class="ev2-stars-fill" style="width:100%"><svg viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg></span></span><p class="ev2-rev-text">Still filling with its first twinkles of sand, waiting to be reviewed by you.</p><div class="ev2-rev-author">A quiet corner of the nursery</div></div></div></div></section>
-<style>.ev2-rev-title{text-align:center;margin-bottom:44px;}
-.ev2-rev>*+*{margin-top:14px;}.ev2-rev-text{font-size:1.02rem;}
-.ev2-rev-author{font-weight:600;font-family:var(--ev2-font-heading);}
-.ev2-rev--sm{padding:20px;}.ev2-rev--sm .ev2-rev-text{font-size:.92rem;}
-.ev2-rev-pull{margin:0 auto;max-width:780px;text-align:center;border:0;}
-.ev2-rev-pull p{font-family:var(--ev2-font-heading);font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.3;margin:18px 0;}
-.ev2-rev-pull cite{font-style:normal;font-weight:600;color:var(--ev2-muted);}
-.ev2-rev-pull .ev2-stars{justify-content:center;}
-.ev2-rev-rest{margin-top:48px;}
-.ev2-rev-masonry{columns:3 260px;column-gap:24px;}
-.ev2-rev-masonry .ev2-rev{break-inside:avoid;margin-bottom:24px;}
-.ev2-rev-twocol{columns:2 320px;column-gap:24px;max-width:820px;margin:0 auto;}
-.ev2-rev-twocol .ev2-rev{break-inside:avoid;margin-bottom:24px;}
-.ev2-rev-stacked{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:36px;}
-.ev2-rev-srow{display:grid;grid-template-columns:auto 1fr;gap:24px;padding-bottom:36px;border-bottom:1px solid var(--ev2-border);}
-.ev2-rev-srow:last-child{border-bottom:0;padding-bottom:0;}
-.ev2-rev-qmark{font-family:var(--ev2-font-heading);font-size:4rem;line-height:.8;color:var(--ev2-accent-text);opacity:.4;}
-.ev2-rev-srow .ev2-rev-text{font-size:1.2rem;margin-bottom:12px;}
-.ev2-rev-srow .ev2-stars{display:inline-flex;vertical-align:middle;margin-inline-start:8px;}
-.ev2-rev-compact{display:grid;gap:18px;}
-/* Vertical padding gives the cards' box-shadows room INSIDE the clipped+masked box, so the shadow
-   isn't sheared off at the top/bottom edge (overflow:hidden is needed for the horizontal scroll and
-   the mask clips to the border-box, so the shadow has to live within the padding, not bleed out). */
-.ev2-rev-marquee{overflow:hidden;padding:30px 0;-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);}
-.ev2-rev-track{display:flex;gap:24px;width:max-content;}
-.ev2-rev-track .ev2-rev{width:340px;flex:0 0 auto;}
-@media(prefers-reduced-motion:no-preference){.ev2-rev-track{animation:ev2-marq 38s linear infinite;}@keyframes ev2-marq{from{transform:translateX(0);}to{transform:translateX(-50%);}}}
-@media(max-width:860px){.ev2-rev-masonry,.ev2-rev-twocol{columns:1;}.ev2-rev-compact{grid-template-columns:1fr 1fr !important;}.ev2-rev-srow{grid-template-columns:1fr;gap:8px;}}</style>
-<section id="faq" class="ev2-section ev2-section--surface"><div class="ev2-wrap" style="max-width:760px;"><h2 class="ev2-h2 ev2-faq-title">Soft questions, softer answers</h2><details class="ev2-faq-item"><summary>Can I use AuraSand for focused work, not just sleep?</summary><p class="ev2-muted">Oh yes, little one. The Pomodoro glass loves to sit beside your busy hours too.</p></details><details class="ev2-faq-item"><summary>Will the white noise play while the sand falls?</summary><p class="ev2-muted">It will hum along gently, wrapping every grain in a soft cloud of hush.</p></details><details class="ev2-faq-item"><summary>Can I set my own countdown time?</summary><p class="ev2-muted">Of course. Tell the glass how long to drift, and it will listen sweetly.</p></details><details class="ev2-faq-item"><summary>Is it gentle enough for little ones?</summary><p class="ev2-muted">Yes indeed. It was tipped and tilted just for small sleepy eyes.</p></details></div></section>
-<style>.ev2-faq-title{text-align:center;margin-bottom:40px;}
-.ev2-faq-item{border-bottom:1px solid var(--ev2-border);padding:18px 0;}
-.ev2-faq-item summary{cursor:pointer;font-weight:600;font-family:var(--ev2-font-heading);list-style:none;display:flex;gap:12px;}
-.ev2-faq-item summary::-webkit-details-marker{display:none;}
-.ev2-faq-item p{margin-top:12px;}
-.ev2-faq-n{color:var(--ev2-accent-text);font-weight:800;}
-.ev2-faq-item--card{border:1px solid var(--ev2-border);border-radius:var(--ev2-radius);padding:18px 22px;margin-bottom:14px;}
-.ev2-faq-bordered{display:flex;flex-direction:column;}
-.ev2-faq-twocol{display:grid;grid-template-columns:1fr 1fr;gap:36px 48px;}
-.ev2-faq-q{font-size:1.05rem;font-family:var(--ev2-font-heading);margin-bottom:8px;}
-.ev2-faq-plainlist{display:flex;flex-direction:column;gap:28px;}
-@media(max-width:860px){.ev2-faq-twocol{grid-template-columns:1fr;}}</style>
-<section class="ev2-section ev2-section--accent"><div class="ev2-wrap"><div class="ev2-cta-box ev2-section--primary"><img class="ev2-cta-icon" src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png" alt=""><h2 class="ev2-h2">Come tip the glass and drift a while</h2><p class="ev2-cta-sub">The sand is waiting, soft and twinkling, just for you.</p><div class="ev2-store-row"><a class="ev2-store-link" href="https://play.google.com/store/apps/details?id=com.siteflare.hourglass" target="_blank" rel="noopener"><img class="ev2-store" src="https://entro.work/assets/mockups/google-play.svg" alt="Get it on Google Play" loading="lazy"></a></div></div></div></section>
-<style>.ev2-cta .ev2-store-row{justify-content:center;}
-.ev2-cta-sub{opacity:.9;font-size:1.1rem;max-width:48ch;}
-.ev2-cta-icon{width:72px;height:72px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.22);}
-.ev2-cta-proof{display:inline-flex;align-items:center;gap:8px;font-size:.98rem;}
-.ev2-cta-proof strong{font-family:var(--ev2-font-heading);font-weight:700;}
-.ev2-cta-proof span{opacity:.82;}
-.ev2-cta--stack .ev2-wrap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;}
-.ev2-cta--stack .ev2-cta-sub{margin-inline:auto;}</style><style>.ev2-cta-box{text-align:center;padding:52px 40px;border-radius:var(--ev2-card-radius,var(--ev2-radius));display:flex;flex-direction:column;align-items:center;gap:16px;}</style>
-<footer class="ev2-section ev2-section--bg ev2-foot"><div class="ev2-wrap"><div class="ev2-foot-top"><div class="ev2-foot-brand">Hourglass Timer - AuraSand<p class="ev2-muted ev2-foot-tag">Soft sand, slow time, sweet dreams.</p></div><nav class="ev2-foot-links"><a href="#screens">Screens</a><a href="#features">Little Wonders</a><a href="#faq">FAQ</a></nav></div><div class="ev2-foot-bottom"><div class="ev2-foot-copy ev2-muted">© <span class="ev2-foot-year">2026</span> SiteFlare. All rights reserved.</div><div class="ev2-foot-socials"><a class="ev2-foot-soc" href="https://www.youtube.com/@aurasand3d" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a></div></div></div></footer>
-<script>document.querySelectorAll('.ev2-foot-year').forEach(function(e){e.textContent=new Date().getFullYear();});</script>
-<style>.ev2-foot{padding:56px 0 40px;}
-.ev2-foot-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;align-items:flex-start;}
-.ev2-foot-brand{font-family:var(--ev2-font-heading);font-weight:700;font-size:1.2rem;}
-.ev2-foot-tag{font-size:.95rem;margin-top:6px;font-family:var(--ev2-font-body);font-weight:400;}
-.ev2-foot-links{display:flex;gap:22px;flex-wrap:wrap;}
-.ev2-foot-links a:hover{color:var(--ev2-accent-text);}
-.ev2-foot-bottom{margin-top:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;}
-.ev2-foot-copy{font-size:.9rem;}
-.ev2-foot-socials{display:flex;gap:10px;flex-wrap:wrap;}
-.ev2-foot-soc{width:38px;height:38px;border-radius:50%;border:1px solid var(--ev2-border);color:var(--ev2-muted);display:inline-flex;align-items:center;justify-content:center;transition:color .2s ease,border-color .2s ease,transform .2s ease;}
-.ev2-foot-soc:hover{color:var(--ev2-accent-text);border-color:var(--ev2-accent-text);transform:translateY(-2px);}</style>
+    <header class="ev2-nav">
+        <input type="checkbox" id="ev2-nav-toggle" class="ev2-nav-checkbox" aria-hidden="true">
+        <div class="ev2-wrap ev2-nav-inner">
+            <a class="ev2-nav-brand" href="#top"><img class="ev2-nav-logo" src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png" alt="AuraSand icon"><span data-i18n="brand_name">AuraSand</span></a>
+            <nav class="ev2-nav-links"><a href="#screenshots" data-i18n="nav_screens">Screens</a><a href="#features" data-i18n="nav_features">Little Wonders</a><a href="#usecases" data-i18n="nav_usecases">For You</a><a href="#how" data-i18n="nav_how">How It Drifts</a><a href="#faq" data-i18n="nav_faq">FAQ</a></nav>
+            <div class="ev2-nav-actions"><a class="ev2-btn ev2-btn--primary ev2-nav-cta" href="https://play.google.com/store/apps/details?id=com.siteflare.hourglass" data-i18n="nav_cta">Get It</a></div>
+            <div class="ev2-lang-switcher" id="ev2-lang-switcher">
+                <button class="ev2-lang-btn" id="ev2-lang-btn" aria-label="Change language" data-i18n-aria="lang_switch_aria">
+                    <span id="ev2-lang-label">EN</span>
+                    <span class="ev2-lang-arrow">▾</span>
+                </button>
+                <div class="ev2-lang-dropdown" id="ev2-lang-dropdown">
+                    <button data-lang="en" data-i18n="lang_en">English</button>
+                    <button data-lang="zh-CN" data-i18n="lang_zhcn">简体中文</button>
+                    <button data-lang="zh-TW" data-i18n="lang_zhtw">繁體中文</button>
+                    <button data-lang="ja" data-i18n="lang_ja">日本語</button>
+                    <button data-lang="ko" data-i18n="lang_ko">한국어</button>
+                </div>
+            </div>
+            <label for="ev2-nav-toggle" class="ev2-nav-burger" aria-label="Toggle menu" data-i18n-aria="menu_toggle"><span></span><span></span><span></span></label>
+        </div>
+        <div class="ev2-nav-mobile">
+            <nav><a href="#screenshots" data-i18n="nav_screens">Screens</a><a href="#features" data-i18n="nav_features">Little Wonders</a><a href="#usecases" data-i18n="nav_usecases">For You</a><a href="#how" data-i18n="nav_how">How It Drifts</a><a href="#faq" data-i18n="nav_faq">FAQ</a></nav>
+            <a class="ev2-btn ev2-btn--primary" href="https://play.google.com/store/apps/details?id=com.siteflare.hourglass" data-i18n="nav_cta">Get It</a>
+            <div class="ev2-lang-switcher ev2-lang-switcher--mobile" style="align-self:flex-start;">
+                <button class="ev2-lang-btn" aria-label="Change language" data-i18n-aria="lang_switch_aria" onclick="document.getElementById('ev2-lang-btn').click()">
+                    <span data-i18n="lang_switch_mobile">Language</span> ▾
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section id="top" class="ev2-section ev2-hero ev2-section--bg">
+        <div class="ev2-wrap" style="position:relative;z-index:1;">
+            <div class="ev2-hero-split ev2-hero-split--rev">
+                <div class="ev2-hero-device ev2-hero-device--phone"><span class="ev2-hero-aura" aria-hidden="true"></span><span class="ev2-hero-float"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/c2e93f33-0896-4fa7-9dfa-8fb1cf6f15b0.png" alt="App preview" data-i18n-alt="hero_img_alt" loading="eager"></span></div>
+                <div class="ev2-hero-copy"><img class="ev2-hero-icon" src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png" alt="App icon" data-i18n-alt="app_icon_alt"><p class="ev2-eyebrow" data-i18n="hero_eyebrow">Hush now, little one</p><h1 class="ev2-h1" data-i18n-html="hero_h1">Watch the sand drift down in the <span class="ev2-hl">sleepy hourglass</span></h1><p class="ev2-lead" data-i18n="hero_lead">One grain, then another. So soft, so slow. Time to rest, time to dream, time to focus, all in one twinkling glass.</p><div class="ev2-store-row"><a class="ev2-store-link" href="https://play.google.com/store/apps/details?id=com.siteflare.hourglass" target="_blank" rel="noopener"><img class="ev2-store" src="https://entro.work/assets/mockups/google-play.svg" alt="Get it on Google Play" loading="lazy"></a></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ev2-section ev2-section--surface" style="padding:56px 0;">
+        <div class="ev2-wrap" style="text-align:center;">
+            <p class="ev2-eyebrow ev2-hl-title" data-i18n="highlights_eyebrow">Little sparkles tucked inside</p>
+            <div class="ev2-highlights" style="--ev2-hl-cols:4;">
+                <div class="ev2-hlcell"><div class="ev2-hl-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></div><span data-i18n="hl_sparkle">Sand that sparkles</span></div>
+                <div class="ev2-hlcell"><div class="ev2-hl-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9C1 9 2.5 5 6.5 5 9 5 12 8 12 8s3-3 5.5-3C21.5 5 23 9 21.5 12 19 16.5 12 21 12 21z"/></svg></div><span data-i18n="hl_whitenoise">Gentle white noise</span></div>
+                <div class="ev2-hlcell"><div class="ev2-hl-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3 7 7 .5-5.3 4.6L18.5 21 12 17l-6.5 4 1.8-6.9L2 9.5 9 9z"/></svg></div><span data-i18n="hl_pomodoro">Cozy Pomodoro</span></div>
+                <div class="ev2-hlcell"><div class="ev2-hl-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></div><span data-i18n="hl_countdown">Calm countdowns</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="screenshots" class="ev2-section ev2-section--bg">
+        <div class="ev2-wrap"><h2 class="ev2-h2 ev2-shot-title" data-i18n="shots_title">Peek inside the glass</h2>
+            <div class="ev2-shot-slider"><button type="button" class="ev2-shot-nav ev2-shot-nav--prev" aria-label="Previous screenshot" data-i18n-aria="shot_prev" onclick="var t=this.parentNode.querySelector('.ev2-shot-track'),s=t.querySelector('.ev2-shot-slide');t.scrollBy({left:-((s?s.offsetWidth:320)+24),behavior:'smooth'})"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+                <div class="ev2-shot-track"><div class="ev2-shot-slide"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/c2e93f33-0896-4fa7-9dfa-8fb1cf6f15b0.png" alt="App screenshot" data-i18n-alt="shot_alt" loading="lazy"></div><div class="ev2-shot-slide"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/9a06e201-89be-4580-ad85-991adcb98507.png" alt="App screenshot" data-i18n-alt="shot_alt" loading="lazy"></div><div class="ev2-shot-slide"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/ab4e5e60-8a68-4f74-bb23-29e083956dfd.png" alt="App screenshot" data-i18n-alt="shot_alt" loading="lazy"></div><div class="ev2-shot-slide"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/25ec520e-06f2-46d0-84d3-c2c53447d3ae.png" alt="App screenshot" data-i18n-alt="shot_alt" loading="lazy"></div><div class="ev2-shot-slide"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/5e3be5bc-0419-472a-959c-a4c926792276.png" alt="App screenshot" data-i18n-alt="shot_alt" loading="lazy"></div><div class="ev2-shot-slide"><img src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/7958971c-8296-49f9-b540-75a63d587676.png" alt="App screenshot" data-i18n-alt="shot_alt" loading="lazy"></div></div><button type="button" class="ev2-shot-nav ev2-shot-nav--next" aria-label="Next screenshot" data-i18n-aria="shot_next" onclick="var t=this.parentNode.querySelector('.ev2-shot-track'),s=t.querySelector('.ev2-shot-slide');t.scrollBy({left:((s?s.offsetWidth:320)+24),behavior:'smooth'})"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button></div></div>
+    </section>
+
+    <section id="features" class="ev2-section ev2-section--surface">
+        <div class="ev2-wrap"><h2 class="ev2-h2 ev2-feat-title" data-i18n="feat_title">Every little grain has a job</h2>
+            <div class="ev2-feat-timeline">
+                <div class="ev2-feat-tl"><div class="ev2-feat-tldot">1</div><div class="ev2-feat-tlcopy"><h3 class="ev2-feat-h" data-i18n="feat_t1_title">Pomodoro, softly</h3><p class="ev2-muted" data-i18n="feat_t1_desc">Work floats by in gentle stretches, with rest tucked snug between.</p></div></div>
+                <div class="ev2-feat-tl"><div class="ev2-feat-tldot">2</div><div class="ev2-feat-tlcopy"><h3 class="ev2-feat-h" data-i18n="feat_t2_title">Meditation glow</h3><p class="ev2-muted" data-i18n="feat_t2_desc">Breathe in, breathe out, while the sand settles calm and slow.</p></div></div>
+                <div class="ev2-feat-tl"><div class="ev2-feat-tldot">3</div><div class="ev2-feat-tlcopy"><h3 class="ev2-feat-h" data-i18n="feat_t3_title">Countdown that twinkles</h3><p class="ev2-muted" data-i18n="feat_t3_desc">Set a time, watch it drift, and let the glass do the waiting.</p></div></div>
+                <div class="ev2-feat-tl"><div class="ev2-feat-tldot">4</div><div class="ev2-feat-tlcopy"><h3 class="ev2-feat-h" data-i18n="feat_t4_title">Sand that shimmers</h3><p class="ev2-muted" data-i18n="feat_t4_desc">Each grain catches a little sparkle as it tips and falls.</p></div></div>
+                <div class="ev2-feat-tl"><div class="ev2-feat-tldot">5</div><div class="ev2-feat-tlcopy"><h3 class="ev2-feat-h" data-i18n="feat_t5_title">White noise clouds</h3><p class="ev2-muted" data-i18n="feat_t5_desc">Soft hush sounds drift in, wrapping the room in quiet.</p></div></div>
+                <div class="ev2-feat-tl"><div class="ev2-feat-tldot">6</div><div class="ev2-feat-tlcopy"><h3 class="ev2-feat-h" data-i18n="feat_t6_title">No fuss, just calm</h3><p class="ev2-muted" data-i18n="feat_t6_desc">One tap and the glass begins its slow, sleepy turn.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="usecases" class="ev2-section ev2-section--bg">
+        <div class="ev2-wrap"><h2 class="ev2-h2 ev2-uc-title" data-i18n="uc_title">Built for sleepy moments and busy ones too</h2>
+            <div class="ev2-grid ev2-grid--2">
+                <div class="ev2-card ev2-uc"><div class="ev2-uc-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3 7 7 .5-5.3 4.6L18.5 21 12 17l-6.5 4 1.8-6.9L2 9.5 9 9z"/></svg></div><h3 class="ev2-uc-h" data-i18n="uc_bedtime_title">For bedtime</h3><p class="ev2-muted" data-i18n="uc_bedtime_desc">Let the sand drift while little eyes grow heavy and calm.</p></div>
+                <div class="ev2-card ev2-uc"><div class="ev2-uc-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg></div><h3 class="ev2-uc-h" data-i18n="uc_work_title">For focused work</h3><p class="ev2-muted" data-i18n="uc_work_desc">Sit with the glass through a Pomodoro stretch, quiet and steady.</p></div>
+                <div class="ev2-card ev2-uc"><div class="ev2-uc-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9C1 9 2.5 5 6.5 5 9 5 12 8 12 8s3-3 5.5-3C21.5 5 23 9 21.5 12 19 16.5 12 21 12 21z"/></svg></div><h3 class="ev2-uc-h" data-i18n="uc_breath_title">For quiet breathing</h3><p class="ev2-muted" data-i18n="uc_breath_desc">Meditate alongside the settling sand, one soft breath at a time.</p></div>
+                <div class="ev2-card ev2-uc"><div class="ev2-uc-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></div><h3 class="ev2-uc-h" data-i18n="uc_class_title">For classrooms</h3><p class="ev2-muted" data-i18n="uc_class_desc">A gentle visual timer little ones can watch and understand.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how" class="ev2-section ev2-section--surface">
+        <div class="ev2-wrap"><h2 class="ev2-h2 ev2-steps-title" data-i18n="how_title">How the glass drifts to sleep</h2>
+            <div class="ev2-steps ev2-steps--vertical" style="--ev2-n:4;--ev2-step-halo:var(--ev2-surface);">
+                <div class="ev2-step"><div class="ev2-step-n">1</div><div><h3 class="ev2-step-h" data-i18n="how_s1_title">Choose your glass</h3><p class="ev2-muted" data-i18n="how_s1_desc">Pick a Pomodoro stretch, a meditation hush, or a plain countdown.</p></div></div>
+                <div class="ev2-step"><div class="ev2-step-n">2</div><div><h3 class="ev2-step-h" data-i18n="how_s2_title">Tip it gently</h3><p class="ev2-muted" data-i18n="how_s2_desc">One soft tap, and the sand begins its slow, twinkling fall.</p></div></div>
+                <div class="ev2-step"><div class="ev2-step-n">3</div><div><h3 class="ev2-step-h" data-i18n="how_s3_title">Rest in the sound</h3><p class="ev2-muted" data-i18n="how_s3_desc">Let a cloud of white noise wrap around the falling grains.</p></div></div>
+                <div class="ev2-step"><div class="ev2-step-n">4</div><div><h3 class="ev2-step-h" data-i18n="how_s4_title">Settle and glow</h3><p class="ev2-muted" data-i18n="how_s4_desc">When the last grain falls, a soft chime says it is time to rest.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ev2-section ev2-section--accent ev2-bigst ev2-bigst--quote-mark">
+        <div class="ev2-wrap"><span class="ev2-bigst-qm" aria-hidden="true">&ldquo;</span><blockquote class="ev2-bigst-text" data-i18n="big_quote">Every grain of sand is a tiny lullaby, falling just for you.</blockquote></div>
+    </section>
+
+    <section id="reviews" class="ev2-section ev2-section--bg">
+        <div class="ev2-wrap"><h2 class="ev2-h2 ev2-rev-title" data-i18n="rev_title">Sleepy little words from sleepy little users</h2>
+            <div class="ev2-grid ev2-grid--2"><div class="ev2-card ev2-rev"><span class="ev2-stars" role="img" aria-label="5.0 out of 5"><span class="ev2-stars-base"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg></span><span class="ev2-stars-fill" style="width:100%"><svg viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg><svg viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1.5" class="ev2-star" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15.9 4.8 17.6l1-5.8L1.5 7.7l5.9-.9z"/></svg></span></span><p class="ev2-rev-text" data-i18n="rev_text">Still filling with its first twinkles of sand, waiting to be reviewed by you.</p><div class="ev2-rev-author" data-i18n="rev_author">A quiet corner of the nursery</div></div></div></div>
+    </section>
+
+    <section id="faq" class="ev2-section ev2-section--surface">
+        <div class="ev2-wrap" style="max-width:760px;"><h2 class="ev2-h2 ev2-faq-title" data-i18n="faq_title">Soft questions, softer answers</h2>
+            <details class="ev2-faq-item"><summary data-i18n="faq_q1">Can I use AuraSand for focused work, not just sleep?</summary><p class="ev2-muted" data-i18n="faq_a1">Oh yes, little one. The Pomodoro glass loves to sit beside your busy hours too.</p></details>
+            <details class="ev2-faq-item"><summary data-i18n="faq_q2">Will the white noise play while the sand falls?</summary><p class="ev2-muted" data-i18n="faq_a2">It will hum along gently, wrapping every grain in a soft cloud of hush.</p></details>
+            <details class="ev2-faq-item"><summary data-i18n="faq_q3">Can I set my own countdown time?</summary><p class="ev2-muted" data-i18n="faq_a3">Of course. Tell the glass how long to drift, and it will listen sweetly.</p></details>
+            <details class="ev2-faq-item"><summary data-i18n="faq_q4">Is it gentle enough for little ones?</summary><p class="ev2-muted" data-i18n="faq_a4">Yes indeed. It was tipped and tilted just for small sleepy eyes.</p></details>
+        </div>
+    </section>
+
+    <section class="ev2-section ev2-section--accent">
+        <div class="ev2-wrap"><div class="ev2-cta-box ev2-section--primary"><img class="ev2-cta-icon" src="https://entro.work/storage/entro/apps/hourglass-timer---aurasand/8fc3b805-028f-4527-89f7-7ee47d02d908.png" alt="" data-i18n-alt="app_icon_alt"><h2 class="ev2-h2" data-i18n="cta_title">Come tip the glass and drift a while</h2><p class="ev2-cta-sub" data-i18n="cta_sub">The sand is waiting, soft and twinkling, just for you.</p><div class="ev2-store-row"><a class="ev2-store-link" href="https://play.google.com/store/apps/details?id=com.siteflare.hourglass" target="_blank" rel="noopener"><img class="ev2-store" src="https://entro.work/assets/mockups/google-play.svg" alt="Get it on Google Play" loading="lazy"></a></div></div></div>
+    </section>
+
+    <footer class="ev2-section ev2-section--bg ev2-foot">
+        <div class="ev2-wrap"><div class="ev2-foot-top"><div class="ev2-foot-brand"><span data-i18n="foot_brand">Hourglass Timer - AuraSand</span><p class="ev2-muted ev2-foot-tag" data-i18n="foot_tag">Soft sand, slow time, sweet dreams.</p></div><nav class="ev2-foot-links"><a href="#screenshots" data-i18n="nav_screens">Screens</a><a href="#features" data-i18n="nav_features">Little Wonders</a><a href="#faq" data-i18n="nav_faq">FAQ</a></nav></div><div class="ev2-foot-bottom"><div class="ev2-foot-copy ev2-muted">© <span class="ev2-foot-year">2026</span> SiteFlare. <span data-i18n="foot_rights">All rights reserved.</span></div><div class="ev2-foot-socials"><a class="ev2-foot-soc" href="https://www.youtube.com/@aurasand3d" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a></div></div></div>
+    </footer>
+
+    <script>
+        (function() {
+            const translations = {
+                'en': {
+                    brand_name: 'AuraSand',
+                    nav_screens: 'Screens',
+                    nav_features: 'Little Wonders',
+                    nav_usecases: 'For You',
+                    nav_how: 'How It Drifts',
+                    nav_faq: 'FAQ',
+                    nav_cta: 'Get It',
+                    lang_switch_aria: 'Change language',
+                    lang_switch_mobile: 'Language',
+                    lang_en: 'English',
+                    lang_zhcn: '简体中文',
+                    lang_zhtw: '繁體中文',
+                    lang_ja: '日本語',
+                    lang_ko: '한국어',
+                    menu_toggle: 'Toggle menu',
+                    hero_eyebrow: 'Hush now, little one',
+                    hero_h1: 'Watch the sand drift down in the <span class="ev2-hl">sleepy hourglass</span>',
+                    hero_lead: 'One grain, then another. So soft, so slow. Time to rest, time to dream, time to focus, all in one twinkling glass.',
+                    hero_img_alt: 'App preview',
+                    app_icon_alt: 'App icon',
+                    highlights_eyebrow: 'Little sparkles tucked inside',
+                    hl_sparkle: 'Sand that sparkles',
+                    hl_whitenoise: 'Gentle white noise',
+                    hl_pomodoro: 'Cozy Pomodoro',
+                    hl_countdown: 'Calm countdowns',
+                    shots_title: 'Peek inside the glass',
+                    shot_prev: 'Previous screenshot',
+                    shot_next: 'Next screenshot',
+                    shot_alt: 'App screenshot',
+                    feat_title: 'Every little grain has a job',
+                    feat_t1_title: 'Pomodoro, softly',
+                    feat_t1_desc: 'Work floats by in gentle stretches, with rest tucked snug between.',
+                    feat_t2_title: 'Meditation glow',
+                    feat_t2_desc: 'Breathe in, breathe out, while the sand settles calm and slow.',
+                    feat_t3_title: 'Countdown that twinkles',
+                    feat_t3_desc: 'Set a time, watch it drift, and let the glass do the waiting.',
+                    feat_t4_title: 'Sand that shimmers',
+                    feat_t4_desc: 'Each grain catches a little sparkle as it tips and falls.',
+                    feat_t5_title: 'White noise clouds',
+                    feat_t5_desc: 'Soft hush sounds drift in, wrapping the room in quiet.',
+                    feat_t6_title: 'No fuss, just calm',
+                    feat_t6_desc: 'One tap and the glass begins its slow, sleepy turn.',
+                    uc_title: 'Built for sleepy moments and busy ones too',
+                    uc_bedtime_title: 'For bedtime',
+                    uc_bedtime_desc: 'Let the sand drift while little eyes grow heavy and calm.',
+                    uc_work_title: 'For focused work',
+                    uc_work_desc: 'Sit with the glass through a Pomodoro stretch, quiet and steady.',
+                    uc_breath_title: 'For quiet breathing',
+                    uc_breath_desc: 'Meditate alongside the settling sand, one soft breath at a time.',
+                    uc_class_title: 'For classrooms',
+                    uc_class_desc: 'A gentle visual timer little ones can watch and understand.',
+                    how_title: 'How the glass drifts to sleep',
+                    how_s1_title: 'Choose your glass',
+                    how_s1_desc: 'Pick a Pomodoro stretch, a meditation hush, or a plain countdown.',
+                    how_s2_title: 'Tip it gently',
+                    how_s2_desc: 'One soft tap, and the sand begins its slow, twinkling fall.',
+                    how_s3_title: 'Rest in the sound',
+                    how_s3_desc: 'Let a cloud of white noise wrap around the falling grains.',
+                    how_s4_title: 'Settle and glow',
+                    how_s4_desc: 'When the last grain falls, a soft chime says it is time to rest.',
+                    big_quote: 'Every grain of sand is a tiny lullaby, falling just for you.',
+                    rev_title: 'Sleepy little words from sleepy little users',
+                    rev_text: 'Still filling with its first twinkles of sand, waiting to be reviewed by you.',
+                    rev_author: 'A quiet corner of the nursery',
+                    faq_title: 'Soft questions, softer answers',
+                    faq_q1: 'Can I use AuraSand for focused work, not just sleep?',
+                    faq_a1: 'Oh yes, little one. The Pomodoro glass loves to sit beside your busy hours too.',
+                    faq_q2: 'Will the white noise play while the sand falls?',
+                    faq_a2: 'It will hum along gently, wrapping every grain in a soft cloud of hush.',
+                    faq_q3: 'Can I set my own countdown time?',
+                    faq_a3: 'Of course. Tell the glass how long to drift, and it will listen sweetly.',
+                    faq_q4: 'Is it gentle enough for little ones?',
+                    faq_a4: 'Yes indeed. It was tipped and tilted just for small sleepy eyes.',
+                    cta_title: 'Come tip the glass and drift a while',
+                    cta_sub: 'The sand is waiting, soft and twinkling, just for you.',
+                    foot_brand: 'Hourglass Timer - AuraSand',
+                    foot_tag: 'Soft sand, slow time, sweet dreams.',
+                    foot_rights: 'All rights reserved.'
+                },
+                'zh-CN': {
+                    brand_name: 'AuraSand',
+                    nav_screens: '截图',
+                    nav_features: '小亮点',
+                    nav_usecases: '为你而设',
+                    nav_how: '如何使用',
+                    nav_faq: '常见问题',
+                    nav_cta: '获取',
+                    lang_switch_aria: '切换语言',
+                    lang_switch_mobile: '语言',
+                    lang_en: 'English',
+                    lang_zhcn: '简体中文',
+                    lang_zhtw: '繁體中文',
+                    lang_ja: '日本語',
+                    lang_ko: '한국어',
+                    menu_toggle: '切换菜单',
+                    hero_eyebrow: '嘘，小宝贝',
+                    hero_h1: '看着沙子在<span class="ev2-hl"> sleepy hourglass </span>中缓缓落下',
+                    hero_lead: '一粒，又一粒。那么轻柔，那么缓慢。是休息的时间，是梦想的时间，是专注的时间，都在这闪烁的玻璃中。',
+                    hero_img_alt: '应用预览',
+                    app_icon_alt: '应用图标',
+                    highlights_eyebrow: '藏在里面的小闪光',
+                    hl_sparkle: '闪烁的沙子',
+                    hl_whitenoise: '温柔的白噪音',
+                    hl_pomodoro: '舒适的番茄钟',
+                    hl_countdown: '平静的倒计时',
+                    shots_title: '窥探玻璃内部',
+                    shot_prev: '上一张截图',
+                    shot_next: '下一张截图',
+                    shot_alt: '应用截图',
+                    feat_title: '每一粒沙都有自己的使命',
+                    feat_t1_title: '温柔的番茄钟',
+                    feat_t1_desc: '工作在温柔的节奏中流淌，休息舒适地穿插其间。',
+                    feat_t2_title: '冥想之光',
+                    feat_t2_desc: '吸气，呼气，看着沙子平静而缓慢地沉淀。',
+                    feat_t3_title: '闪烁的倒计时',
+                    feat_t3_desc: '设定时间，看它漂移，让玻璃来完成等待。',
+                    feat_t4_title: '微光闪烁的沙',
+                    feat_t4_desc: '每一粒沙在翻转落下时都捕捉到一点闪光。',
+                    feat_t5_title: '白噪音云朵',
+                    feat_t5_desc: '轻柔的寂静之声飘进来，将房间包裹在宁静之中。',
+                    feat_t6_title: '简单即宁静',
+                    feat_t6_desc: '轻轻一触，玻璃便开始了它缓慢而困倦的转动。',
+                    uc_title: '为困倦的时刻和忙碌的时刻而建',
+                    uc_bedtime_title: '睡前时光',
+                    uc_bedtime_desc: '让沙子飘落，小小的眼睛变得沉重而平静。',
+                    uc_work_title: '专注工作',
+                    uc_work_desc: '与玻璃一起度过一个番茄钟时段，安静而稳定。',
+                    uc_breath_title: '安静呼吸',
+                    uc_breath_desc: '伴随着沉淀的沙子冥想，一次轻柔的呼吸。',
+                    uc_class_title: '教室使用',
+                    uc_class_desc: '一个温柔的可视化计时器，小朋友们可以观看和理解。',
+                    how_title: '玻璃如何漂入梦乡',
+                    how_s1_title: '选择你的玻璃',
+                    how_s1_desc: '选择一个番茄钟时段、一段冥想静默，或一个简单的倒计时。',
+                    how_s2_title: '轻轻翻转',
+                    how_s2_desc: '轻轻一触，沙子便开始了它缓慢而闪烁的飘落。',
+                    how_s3_title: '在声音中休息',
+                    how_s3_desc: '让白噪音的云朵包裹着落下的沙粒。',
+                    how_s4_title: '沉淀与发光',
+                    how_s4_desc: '当最后一粒沙落下，一声轻柔的钟鸣告诉你该休息了。',
+                    big_quote: '每一粒沙都是一首小小的摇篮曲，只为你而落。',
+                    rev_title: '来自困倦用户的困倦话语',
+                    rev_text: '还在装满最初的闪烁沙粒，等待你的评价。',
+                    rev_author: '育儿室的一个安静角落',
+                    faq_title: '轻柔的问题，更轻柔的回答',
+                    faq_q1: '我可以在专注工作时使用AuraSand，而不仅仅是睡觉吗？',
+                    faq_a1: '当然可以，小宝贝。番茄钟玻璃也喜欢陪伴你忙碌的时光。',
+                    faq_q2: '沙子落下时白噪音会播放吗？',
+                    faq_a2: '它会轻轻地哼唱，用柔软的静谧云朵包裹每一粒沙。',
+                    faq_q3: '我可以设置自己的倒计时时间吗？',
+                    faq_a3: '当然。告诉玻璃要漂多久，它会温柔地倾听。',
+                    faq_q4: '它足够柔和适合小朋友吗？',
+                    faq_a4: '是的。它就是为小小的困倦眼睛而翻转倾斜的。',
+                    cta_title: '来翻转玻璃，漂一会儿吧',
+                    cta_sub: '沙子在等待，柔软而闪烁，只为你。',
+                    foot_brand: 'Hourglass Timer - AuraSand',
+                    foot_tag: '柔软的沙，缓慢的时间，甜美的梦。',
+                    foot_rights: '版权所有。'
+                },
+                'zh-TW': {
+                    brand_name: 'AuraSand',
+                    nav_screens: '截圖',
+                    nav_features: '小亮點',
+                    nav_usecases: '為你而設',
+                    nav_how: '如何使用',
+                    nav_faq: '常見問題',
+                    nav_cta: '獲取',
+                    lang_switch_aria: '切換語言',
+                    lang_switch_mobile: '語言',
+                    lang_en: 'English',
+                    lang_zhcn: '简体中文',
+                    lang_zhtw: '繁體中文',
+                    lang_ja: '日本語',
+                    lang_ko: '한국어',
+                    menu_toggle: '切換選單',
+                    hero_eyebrow: '噓，小寶貝',
+                    hero_h1: '看著沙子在<span class="ev2-hl"> sleepy hourglass </span>中緩緩落下',
+                    hero_lead: '一粒，又一粒。那麼輕柔，那麼緩慢。是休息的時間，是夢想的時間，是專注的時間，都在這閃爍的玻璃中。',
+                    hero_img_alt: '應用預覽',
+                    app_icon_alt: '應用圖示',
+                    highlights_eyebrow: '藏在裡面的小閃光',
+                    hl_sparkle: '閃爍的沙子',
+                    hl_whitenoise: '溫柔的白噪音',
+                    hl_pomodoro: '舒適的番茄鐘',
+                    hl_countdown: '平靜的倒數',
+                    shots_title: '窺探玻璃內部',
+                    shot_prev: '上一張截圖',
+                    shot_next: '下一張截圖',
+                    shot_alt: '應用截圖',
+                    feat_title: '每一粒沙都有自己的使命',
+                    feat_t1_title: '溫柔的番茄鐘',
+                    feat_t1_desc: '工作在溫柔的節奏中流淌，休息舒適地穿插其間。',
+                    feat_t2_title: '冥想之光',
+                    feat_t2_desc: '吸氣，呼氣，看著沙子平靜而緩慢地沉澱。',
+                    feat_t3_title: '閃爍的倒數',
+                    feat_t3_desc: '設定時間，看它漂移，讓玻璃來完成等待。',
+                    feat_t4_title: '微光閃爍的沙',
+                    feat_t4_desc: '每一粒沙在翻轉落下時都捕捉到一點閃光。',
+                    feat_t5_title: '白噪音雲朵',
+                    feat_t5_desc: '輕柔的寂靜之聲飄進來，將房間包裹在寧靜之中。',
+                    feat_t6_title: '簡單即寧靜',
+                    feat_t6_desc: '輕輕一觸，玻璃便開始了它緩慢而睏倦的轉動。',
+                    uc_title: '為睏倦的時刻和忙碌的時刻而建',
+                    uc_bedtime_title: '睡前時光',
+                    uc_bedtime_desc: '讓沙子飄落，小小的眼睛變得沉重而平靜。',
+                    uc_work_title: '專注工作',
+                    uc_work_desc: '與玻璃一起度過一個番茄鐘時段，安靜而穩定。',
+                    uc_breath_title: '安靜呼吸',
+                    uc_breath_desc: '伴隨著沉澱的沙子冥想，一次輕柔的呼吸。',
+                    uc_class_title: '教室使用',
+                    uc_class_desc: '一個溫柔的可視化計時器，小朋友們可以觀看和理解。',
+                    how_title: '玻璃如何漂入夢鄉',
+                    how_s1_title: '選擇你的玻璃',
+                    how_s1_desc: '選擇一個番茄鐘時段、一段冥想靜默，或一個簡單的倒數。',
+                    how_s2_title: '輕輕翻轉',
+                    how_s2_desc: '輕輕一觸，沙子便開始了它緩慢而閃爍的飄落。',
+                    how_s3_title: '在聲音中休息',
+                    how_s3_desc: '讓白噪音的雲朵包裹著落下的沙粒。',
+                    how_s4_title: '沉澱與發光',
+                    how_s4_desc: '當最後一粒沙落下，一聲輕柔的鐘鳴告訴你該休息了。',
+                    big_quote: '每一粒沙都是一首小小的搖籃曲，只為你而落。',
+                    rev_title: '來自睏倦用戶的睏倦話語',
+                    rev_text: '還在裝滿最初的閃爍沙粒，等待你的評價。',
+                    rev_author: '育兒室的一個安靜角落',
+                    faq_title: '輕柔的問題，更輕柔的回答',
+                    faq_q1: '我可以在專注工作時使用AuraSand，而不僅僅是睡覺嗎？',
+                    faq_a1: '當然可以，小寶貝。番茄鐘玻璃也喜歡陪伴你忙碌的時光。',
+                    faq_q2: '沙子落下時白噪音會播放嗎？',
+                    faq_a2: '它會輕輕地哼唱，用柔軟的靜謐雲朵包裹每一粒沙。',
+                    faq_q3: '我可以設定自己的倒數時間嗎？',
+                    faq_a3: '當然。告訴玻璃要漂多久，它會溫柔地傾聽。',
+                    faq_q4: '它足夠柔和適合小朋友嗎？',
+                    faq_a4: '是的。它就是為小小的睏倦眼睛而翻轉傾斜的。',
+                    cta_title: '來翻轉玻璃，漂一會兒吧',
+                    cta_sub: '沙子在等待，柔軟而閃爍，只為你。',
+                    foot_brand: 'Hourglass Timer - AuraSand',
+                    foot_tag: '柔軟的沙，緩慢的時間，甜美的夢。',
+                    foot_rights: '版權所有。'
+                },
+                'ja': {
+                    brand_name: 'AuraSand',
+                    nav_screens: 'スクリーン',
+                    nav_features: '小さな輝き',
+                    nav_usecases: 'あなたのために',
+                    nav_how: '使い方',
+                    nav_faq: 'よくある質問',
+                    nav_cta: '入手する',
+                    lang_switch_aria: '言語を切り替え',
+                    lang_switch_mobile: '言語',
+                    lang_en: 'English',
+                    lang_zhcn: '简体中文',
+                    lang_zhtw: '繁體中文',
+                    lang_ja: '日本語',
+                    lang_ko: '한국어',
+                    menu_toggle: 'メニューを切り替え',
+                    hero_eyebrow: 'しっ、小さな子よ',
+                    hero_h1: '砂が<span class="ev2-hl">眠そうな砂時計</span>の中で落ちていくのを見てごらん',
+                    hero_lead: '一粒、また一粒。とても柔らかく、とてもゆっくりと。休む時間、夢見る時間、集中する時間、すべてがこのきらめくガラスの中に。',
+                    hero_img_alt: 'アプリのプレビュー',
+                    app_icon_alt: 'アプリアイコン',
+                    highlights_eyebrow: '中にしまわれた小さな輝き',
+                    hl_sparkle: 'きらめく砂',
+                    hl_whitenoise: '優しいホワイトノイズ',
+                    hl_pomodoro: '心地よいポモドーロ',
+                    hl_countdown: '穏やかなカウントダウン',
+                    shots_title: 'ガラスの中をのぞいて',
+                    shot_prev: '前のスクリーンショット',
+                    shot_next: '次のスクリーンショット',
+                    shot_alt: 'アプリのスクリーンショット',
+                    feat_title: '一粒一粒に役割がある',
+                    feat_t1_title: 'ポモドーロ、優しく',
+                    feat_t1_desc: '仕事は優しいリズムで流れ、休息が心地よく挟み込まれる。',
+                    feat_t2_title: '瞑想の輝き',
+                    feat_t2_desc: '息を吸って、吐いて。砂が静かにゆっくりと落ち着く。',
+                    feat_t3_title: 'きらめくカウントダウン',
+                    feat_t3_desc: '時間を設定して、流れるのを見て、ガラスに待つことを任せる。',
+                    feat_t4_title: '輝く砂',
+                    feat_t4_desc: '一粒一粒が、ひっくり返って落ちるときに小さな輝きを捕まえる。',
+                    feat_t5_title: 'ホワイトノイズの雲',
+                    feat_t5_desc: '柔らかな静けさの音が漂い込み、部屋を静寂で包む。',
+                    feat_t6_title: '手間なし、ただ静けさ',
+                    feat_t6_desc: 'ワンタップでガラスがゆっくりと眠そうに回り始める。',
+                    uc_title: '眠い瞬間も忙しい瞬間も',
+                    uc_bedtime_title: 'おやすみ前に',
+                    uc_bedtime_desc: '小さな目が重く静かになるまで、砂が漂うのを見守る。',
+                    uc_work_title: '集中作業に',
+                    uc_work_desc: 'ポモドーロの時間、ガラスと一緒に静かに着実に。',
+                    uc_breath_title: '静かな呼吸に',
+                    uc_breath_desc: '落ち着く砂とともに瞑想し、一回一回柔らかく呼吸する。',
+                    uc_class_title: '教室で',
+                    uc_class_desc: '小さな子たちが見て理解できる、優しいビジュアルタイマー。',
+                    how_title: 'ガラスが眠りに漂う方法',
+                    how_s1_title: 'ガラスを選ぶ',
+                    how_s1_desc: 'ポモドーロの時間、瞑想の静けさ、またはシンプルなカウントダウンを選ぶ。',
+                    how_s2_title: '優しく傾ける',
+                    how_s2_desc: 'ワンタップで、砂がゆっくりときらめく落下を始める。',
+                    how_s3_title: '音の中で休む',
+                    how_s3_desc: 'ホワイトノイズの雲が落ちる砂粒を包み込む。',
+                    how_s4_title: '落ち着いて輝く',
+                    how_s4_desc: '最後の一粒が落ちると、柔らかなチャイムが休息の時間を知らせる。',
+                    big_quote: '一粒一粒の砂は、あなただけのために落ちる小さな子守唄。',
+                    rev_title: '眠そうなユーザーからの眠そうな言葉',
+                    rev_text: 'まだ最初のきらめく砂を満たしているところで、あなたのレビューを待っています。',
+                    rev_author: '子供部屋の静かな片隅',
+                    faq_title: '柔らかな質問、もっと柔らかな答え',
+                    faq_q1: '睡眠だけでなく、集中作業にもAuraSandを使えますか？',
+                    faq_a1: 'もちろんですよ、小さな子。ポモドーロのガラスは忙しい時間のそばに座るのも大好きです。',
+                    faq_q2: '砂が落ちている間、ホワイトノイズは流れますか？',
+                    faq_a2: 'そっとハミングしながら、一粒一粒を柔らかな静けさの雲で包みます。',
+                    faq_q3: '自分のカウントダウン時間を設定できますか？',
+                    faq_a3: 'もちろん。ガラスにどれだけ漂うか伝えれば、優しく聞いてくれます。',
+                    faq_q4: '小さな子にも十分優しいですか？',
+                    faq_a4: 'はい。小さな眠そうな目のために、ひっくり返して傾けられました。',
+                    cta_title: 'ガラスを傾けて、少し漂いましょう',
+                    cta_sub: '砂が待っています、柔らかくきらめいて、あなただけのために。',
+                    foot_brand: 'Hourglass Timer - AuraSand',
+                    foot_tag: '柔らかな砂、ゆっくりな時間、甘い夢。',
+                    foot_rights: '無断転載禁止。'
+                },
+                'ko': {
+                    brand_name: 'AuraSand',
+                    nav_screens: '스크린',
+                    nav_features: '작은 경이',
+                    nav_usecases: '당신을 위해',
+                    nav_how: '사용법',
+                    nav_faq: '자주 묻는 질문',
+                    nav_cta: '받기',
+                    lang_switch_aria: '언어 변경',
+                    lang_switch_mobile: '언어',
+                    lang_en: 'English',
+                    lang_zhcn: '简体中文',
+                    lang_zhtw: '繁體中文',
+                    lang_ja: '日本語',
+                    lang_ko: '한국어',
+                    menu_toggle: '메뉴 열기/닫기',
+                    hero_eyebrow: '쉿, 작은 아이야',
+                    hero_h1: '모래가 <span class="ev2-hl">졸린 모래시계</span> 속에서 내려앉는 걸 지켜봐',
+                    hero_lead: '한 알, 또 한 알. 아주 부드럽게, 아주 천천히. 쉬는 시간, 꿈꾸는 시간, 집중하는 시간, 모두 반짝이는 유리잔 속에.',
+                    hero_img_alt: '앱 미리보기',
+                    app_icon_alt: '앱 아이콘',
+                    highlights_eyebrow: '안에 숨겨진 작은 반짝임',
+                    hl_sparkle: '반짝이는 모래',
+                    hl_whitenoise: '부드러운 백색소음',
+                    hl_pomodoro: '아늑한 뽀모도로',
+                    hl_countdown: '차분한 카운트다운',
+                    shots_title: '유리잔 안을 들여다봐',
+                    shot_prev: '이전 스크린샷',
+                    shot_next: '다음 스크린샷',
+                    shot_alt: '앱 스크린샷',
+                    feat_title: '모래알 하나하나에 역할이 있어',
+                    feat_t1_title: '뽀모도로, 부드럽게',
+                    feat_t1_desc: '일이 부드러운 리듬 속에 흐르고, 휴식이 포근하게 끼어들어.',
+                    feat_t2_title: '명상의 빛',
+                    feat_t2_desc: '들이쉬고, 내쉬고. 모래가 차분하고 천천히 가라앉아.',
+                    feat_t3_title: '반짝이는 카운트다운',
+                    feat_t3_desc: '시간을 설정하고, 흘러가는 걸 지켜보며, 유리잔에게 기다림을 맡겨.',
+                    feat_t4_title: '빛나는 모래',
+                    feat_t4_desc: '알갱이 하나하나가 뒤집혀 떨어질 때 작은 반짝임을 담아.',
+                    feat_t5_title: '백색소음 구름',
+                    feat_t5_desc: '부드러운 고요의 소리가 스며들어 방을 조용히 감싸.',
+                    feat_t6_title: '번거로움 없이, 그저 평온',
+                    feat_t6_desc: '한 번 탭하면 유리잔이 천천히 졸린 듯 돌아가기 시작해.',
+                    uc_title: '졸린 순간과 바쁜 순간 모두를 위해',
+                    uc_bedtime_title: '잠자리에서',
+                    uc_bedtime_desc: '작은 눈이 무거워지고 차분해질 때까지 모래가 흘러내리도록.',
+                    uc_work_title: '집중 작업에',
+                    uc_work_desc: '뽀모도로 시간 동안 유리잔과 함께 조용히 꾸준하게.',
+                    uc_breath_title: '조용한 호흡에',
+                    uc_breath_desc: '가라앉는 모래와 함께 명상하며, 한 번 한 번 부드럽게 숨쉬기.',
+                    uc_class_title: '교실에서',
+                    uc_class_desc: '어린아이들이 보고 이해할 수 있는 부드러운 시각 타이머.',
+                    how_title: '유리잔이 잠 속으로 표류하는 법',
+                    how_s1_title: '유리잔 고르기',
+                    how_s1_desc: '뽀모도로 시간, 명상의 고요, 또는 심플한 카운트다운을 골라.',
+                    how_s2_title: '살며시 기울이기',
+                    how_s2_desc: '한 번 탭하면, 모래가 천천히 반짝이며 떨어지기 시작해.',
+                    how_s3_title: '소리 속에서 쉬기',
+                    how_s3_desc: '백색소음 구름이 떨어지는 모래알들을 감싸.',
+                    how_s4_title: '가라앉아 빛나기',
+                    how_s4_desc: '마지막 한 알이 떨어지면, 부드러운 차임이 쉴 시간이라고 알려줘.',
+                    big_quote: '모래알 하나하나는 오직 당신을 위해 떨어지는 작은 자장가.',
+                    rev_title: '졸린 사용자들의 졸린 이야기',
+                    rev_text: '아직 첫 반짝이는 모래를 채우는 중, 당신의 리뷰를 기다리고 있어요.',
+                    rev_author: '아이 방의 조용한 한구석',
+                    faq_title: '부드러운 질문, 더 부드러운 답변',
+                    faq_q1: '수면뿐만 아니라 집중 작업에도 AuraSand를 사용할 수 있나요?',
+                    faq_a1: '물론이죠, 작은 아이야. 뽀모도로 유리잔은 바쁜 시간 옆에 앉아 있는 것도 좋아해.',
+                    faq_q2: '모래가 떨어지는 동안 백색소음이 재생되나요?',
+                    faq_a2: '부드럽게 흥얼거리며, 모든 알갱이를 포근한 고요의 구름으로 감싸줘.',
+                    faq_q3: '나만의 카운트다운 시간을 설정할 수 있나요?',
+                    faq_a3: '물론이야. 유리잔에게 얼마나 오래 표류할지 말해주면, 달콤하게 들어줄 거야.',
+                    faq_q4: '어린아이들에게도 충분히 부드러운가요?',
+                    faq_a4: '그럼요. 작은 졸린 눈들을 위해 뒤집히고 기울여졌어요.',
+                    cta_title: '유리잔을 기울여, 잠시 표류해요',
+                    cta_sub: '모래가 기다리고 있어요, 부드럽고 반짝이며, 오직 당신만을 위해.',
+                    foot_brand: 'Hourglass Timer - AuraSand',
+                    foot_tag: '부드러운 모래, 느린 시간, 달콤한 꿈.',
+                    foot_rights: '모든 권리 보유.'
+                }
+            };
+
+            const supportedLangs = ['en', 'zh-CN', 'zh-TW', 'ja', 'ko'];
+            const langLabelMap = { 'en': 'EN', 'zh-CN': '简中', 'zh-TW': '繁中', 'ja': '日本語', 'ko': '한국어' };
+
+            function getStoredLang() {
+                try { return localStorage.getItem('ev2-lang'); } catch (e) { return null; }
+            }
+
+            function setStoredLang(lang) {
+                try { localStorage.setItem('ev2-lang', lang); } catch (e) {}
+            }
+
+            function detectBrowserLang() {
+                const raw = (navigator.language || navigator.userLanguage || 'en').trim();
+                if (raw.toLowerCase().startsWith('zh')) {
+                    if (raw.toLowerCase() === 'zh-tw' || raw.toLowerCase() === 'zh-hk' || raw.toLowerCase() ===
+                        'zh-mo' || raw.toLowerCase().includes('hant')) return 'zh-TW';
+                    return 'zh-CN';
+                }
+                if (raw.toLowerCase().startsWith('ja')) return 'ja';
+                if (raw.toLowerCase().startsWith('ko')) return 'ko';
+                const short = raw.split('-')[0];
+                if (supportedLangs.includes(short)) return short;
+                return 'en';
+            }
+
+            function getCurrentLang() {
+                const stored = getStoredLang();
+                if (stored && supportedLangs.includes(stored)) return stored;
+                const detected = detectBrowserLang();
+                setStoredLang(detected);
+                return detected;
+            }
+
+            let currentLang = getCurrentLang();
+
+            function applyTranslations(lang) {
+                const dict = translations[lang] || translations['en'];
+                document.documentElement.lang = lang;
+
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (dict[key]) el.textContent = dict[key];
+                });
+                document.querySelectorAll('[data-i18n-html]').forEach(el => {
+                    const key = el.getAttribute('data-i18n-html');
+                    if (dict[key]) el.innerHTML = dict[key];
+                });
+                document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+                    const key = el.getAttribute('data-i18n-aria');
+                    if (dict[key]) el.setAttribute('aria-label', dict[key]);
+                });
+                document.querySelectorAll('[data-i18n-alt]').forEach(el => {
+                    const key = el.getAttribute('data-i18n-alt');
+                    if (dict[key]) el.setAttribute('alt', dict[key]);
+                });
+
+                const labelEl = document.getElementById('ev2-lang-label');
+                if (labelEl) labelEl.textContent = langLabelMap[lang] || lang;
+
+                document.querySelectorAll('#ev2-lang-dropdown button').forEach(btn => {
+                    btn.classList.toggle('ev2-lang--active', btn.getAttribute('data-lang') === lang);
+                });
+            }
+
+            function switchLang(lang) {
+                if (!supportedLangs.includes(lang)) return;
+                currentLang = lang;
+                setStoredLang(lang);
+                applyTranslations(lang);
+                document.getElementById('ev2-lang-switcher').classList.remove('ev2-lang-switcher--open');
+            }
+
+            applyTranslations(currentLang);
+
+            const switcher = document.getElementById('ev2-lang-switcher');
+            const langBtn = document.getElementById('ev2-lang-btn');
+            const dropdown = document.getElementById('ev2-lang-dropdown');
+
+            langBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                switcher.classList.toggle('ev2-lang-switcher--open');
+            });
+
+            dropdown.querySelectorAll('button').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    switchLang(this.getAttribute('data-lang'));
+                });
+            });
+
+            document.addEventListener('click', function() {
+                switcher.classList.remove('ev2-lang-switcher--open');
+            });
+
+            document.querySelectorAll('.ev2-foot-year').forEach(function(e) { e.textContent = new Date()
+                    .getFullYear(); });
+        })();
+    </script>
 </body>
 </html>
